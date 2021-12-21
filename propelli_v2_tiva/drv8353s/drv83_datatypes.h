@@ -10,14 +10,14 @@
 
 //*****************************************************************************
 //
-//! Diese Datei beinhaltet Enums die Spi-Register des Treigber-IC
+//! Diese Datei3 beinhaltet Enums die Spi-Register des Treigber-IC
 //
 //*****************************************************************************
 
 #ifndef DRV8353S_DRV83_DATATYPES_H_
 #define DRV8353S_DRV83_DATATYPES_H_
 
-#include <stdint.h>     // für texas instruments
+#include <stdint.h>     // fï¿½r texas instruments
 #include <stdbool.h>
 #include "common/utils.h"
 
@@ -25,7 +25,7 @@
 //
 // Pwm-Ansteuerungsmodus
 // Der Treiber nimmt 1, 3 oder 6 Pwm-Signale entgegen
-// bei 1x Sind die Hall Signale an den anderen Pwm-Eingängen verbunden
+// bei 1x Sind die Hall Signale an den anderen Pwm-Eingï¿½ngen verbunden
 // Siehe /doc/drv8385s_datasheet.pdf
 //*****************************************************************************
 
@@ -35,7 +35,7 @@ typedef enum
 } EN_DRV_MODE_PWM;
 
 //*****************************************************************************
-// Faktoren für Shuntverstärker (CSA)
+// Faktoren fï¿½r Shuntverstï¿½rker (CSA)
 //*****************************************************************************
 
 typedef enum
@@ -46,8 +46,8 @@ typedef enum
 } EN_DRV_MODE_SHNT;
 
 //*****************************************************************************
-// Schwellen für Kurzschlusserkennung
-// Spannungsfall direkt über den Mosfets
+// Schwellen fï¿½r Kurzschlusserkennung
+// Spannungsfall direkt ï¿½ber den Mosfets
 //*****************************************************************************
 
 typedef enum
@@ -56,10 +56,10 @@ typedef enum
 } EN_DRV_MODE_OLP;
 
 //*****************************************************************************
-// Bezugsspannung für Shuntspannung
-// unidirektional heißt bezug auf gnd (kein vorzeichen)
+// Bezugsspannung fï¿½r Shuntspannung
+// unidirektional heiï¿½t bezug auf gnd (kein vorzeichen)
 // bidirektional ist Bezug auf vcc/2 (vorzeichen)
-// bidirektinale Messung ist für Shuntverstärker in den Motorphasen sinnvoll
+// bidirektinale Messung ist fï¿½r Shuntverstï¿½rker in den Motorphasen sinnvoll
 //*****************************************************************************
 
 typedef enum
