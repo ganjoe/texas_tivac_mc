@@ -10,7 +10,7 @@
 
 //*****************************************************************************
 //
-//! Diese Datei beinhaltet Enums die Spi-Register des Treigber-IC
+//! Diese Datei beinhaltet Enums die Spi-Register des Treiber-IC
 //
 //*****************************************************************************
 

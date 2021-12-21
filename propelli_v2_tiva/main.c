@@ -1,26 +1,3 @@
-//*****************************************************************************
-//
-// project0.c - Example to demonstrate minimal TivaWare setup
-//
-// Copyright (c) 2012-2020 Texas Instruments Incorporated.  All rights reserved.
-// Software License Agreement
-// 
-// Texas Instruments (TI) is supplying this software for use solely and
-// exclusively on TI's microcontroller products. The software is owned by
-// TI and/or its suppliers, and is protected under applicable copyright
-// laws. You may not combine this software with "viral" open-source
-// software in order to form a larger program.
-// 
-// THIS SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS.
-// NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT
-// NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. TI SHALL NOT, UNDER ANY
-// CIRCUMSTANCES, BE LI6ABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
-// DAMAGES, FOR ANY REASON WHATSOEVER.
-// 
-// This is part of revision 2.2.0.295 of the EK-TM4C123GXL Firmware Package.
-//
-//*****************************************************************************
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -28,25 +5,14 @@
 #include "inc/hw_memmap.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/gpio.h"
+#include "driverlib/ssi.h"
 
 #include "drv8353s/drv83_interface.h"
 
 
 #define RED_LED   GPIO_PIN_1
-#define BLUE_LED  GPIO_PIN_2
-#define GREEN_LED GPIO_PIN_3
 
-//*****************************************************************************
-//
-// The error routine that is called if the driver library encounters an error.
-//
-//*****************************************************************************
 
-//*****************************************************************************
-//
-// Main 'C' Language entry point.  Toggle an LED using TivaWare.
-//
-//*****************************************************************************
 int main(void)
 {
     //
@@ -54,46 +20,44 @@ int main(void)
     //
     SysCtlClockSet(SYSCTL_SYSDIV_4|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 
-    //
-    // Enable and wait for the port to be ready for access
-    //
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF))
-    {
-    }
     
-    //
-    // Configure the GPIO port for the LED operation.
-    //
-    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED);
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF))   { }
+
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED);
+
+    // Enable the SSI0 peripheral
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    //      PA5 - SSI0Tx (TM4C123x) / SSI0XDAT1 (TM4C129x)
+    //      PA4 - SSI0Rx (TM4C123x) / SSI0XDAT0 (TM4C129x)
+    //      PA3 - SSI0Fss
+    //      PA2 - SSI0CLK
+    GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_3 | GPIO_PIN_2);
 
     //
-    // Loop Forever
+    // Wait for the SSI0 module to be ready.
     //
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_SSI0))   {    }
+    // Configure the SSI.
+    SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0, SSI_MODE_MASTER, 2000000, 8);
+
+    SSIEnable(SSI0_BASE);
+   //      drvconfig.modeSelect = drv_pwm_3x;
+     //   drv_setPwmMode(&drvconfig);
+
+
+    char *pcChars = "SSI Master send data.";
+    int32_t i32Idx =21;
+    // Loop Forever
+
     while(1)
     {
-        //
-        // Turn on the LED
-        //
-
-        drvconfig.modeSelect = drv_pwm_3x;
-        drv_setPwmMode(&drvconfig);
-
-        GPIOPinWrite(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED, RED_LED);
-
-        //
-        // Delay for a bit
-        //
-        SysCtlDelay(2000000);
-
-        //
-        // Turn on the LED
-        //
-        GPIOPinWrite(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED, BLUE_LED);
-
-        //
-        // Delay for a bit
-        //
-        SysCtlDelay(2000000);
+    while(i32Idx)
+    {
+        SSIDataPut(SSI0_BASE, pcChars[i32Idx]);
+        i32Idx--;
+    }
+    i32Idx =21;
     }
 }
