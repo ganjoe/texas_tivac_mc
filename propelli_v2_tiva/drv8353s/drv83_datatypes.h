@@ -10,16 +10,19 @@
 
 //*****************************************************************************
 //
-//! Diese Datei beinhaltet Enums die Spi-Register des Treiber-IC
+//! Globaler Datentyp für DRV83
 //
 //*****************************************************************************
 
 #ifndef DRV8353S_DRV83_DATATYPES_H_
 #define DRV8353S_DRV83_DATATYPES_H_
 
-#include <stdint.h>     // fï¿½r texas instruments
-#include <stdbool.h>
-#include "common/utils.h"
+
+
+#include "main.h"
+
+
+
 
 //*****************************************************************************
 //
@@ -28,6 +31,8 @@
 // bei 1x Sind die Hall Signale an den anderen Pwm-Eingï¿½ngen verbunden
 // Siehe /doc/drv8385s_datasheet.pdf
 //*****************************************************************************
+
+
 
 typedef enum
 {
