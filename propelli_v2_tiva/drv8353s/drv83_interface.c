@@ -39,8 +39,8 @@ int drv_setPwmMode(TD_DRV83 *select)
         break;
 
         }
-     if (drv_writeCompareReg(CSAcontrol, regbuffer))
-         return 1;
+    // if (drv_writeCompareReg(CSAcontrol, regbuffer))
+     //    return 1;
     }
    return 0;
     }

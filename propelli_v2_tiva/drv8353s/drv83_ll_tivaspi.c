@@ -24,7 +24,7 @@ void drv_spi_blocking_init()
         //
         while(!SysCtlPeripheralReady(SYSCTL_PERIPH_SSI0))   {    }
         // Configure the SSI.
-        SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0, SSI_MODE_MASTER, 200000, 16);
+        SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_TI, SSI_MODE_MASTER, 200000, 16);
 
         SSIEnable(SSI0_BASE);
 }
@@ -52,9 +52,10 @@ void drv_readRegister(uint16_t regNr, uint16_t *data)
     tword = regNr;
     tword <<= 11;
     // rw -bit setzen(15)
-  //  utils_set_bit_in_Word(&tword, 15, 1);
+    utils_set_bit_in_Word(&tword, 15, 1);
    // drv_csPulse();
    // HAL_SPI_TransmitReceive(&hspi1, (uint8_t*) &tword, (uint8_t*) data, 1,HAL_TIMEOUT);
+    SSIDataPut(SSI0_BASE, tword);
 
     }
 bool drv_writeCompareReg(uint8_t regNr, uint16_t reg)
@@ -83,6 +84,7 @@ bool drv_readCompareReg(uint8_t regNr, uint16_t reg)
     //   HAL_Delay(10);
      //  Error_Handler();
        }
+    drv_readRegister (regNr,&regbuffer);
 
    return 1;
 }

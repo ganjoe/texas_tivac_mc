@@ -28,6 +28,7 @@ int main(void)
 
     while(1)
     {
-        drv_setPwmMode(&drvconfig);
+        drv_setOvrLoadProt(&drvconfig);
+        //drv_setPwmMode(&drvconfig);
     }
 }
