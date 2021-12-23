@@ -7,12 +7,10 @@
 
 
 #include "drv83_interface.h"
+#include "drv83_ll_tivaspi.h"
 
 //implementiert in drv83_ll_
-void drv_writeRegister(uint8_t regNr, uint16_t bitMask);
-void drv_readRegister(uint16_t regNr, uint16_t *data);
-int drv_writeCompareReg(uint8_t regNr, uint16_t reg);
-int drv_readCompareReg(uint8_t regNr, uint16_t *data);
+
 
 int drv_setPwmMode(TD_DRV83 *select)
     {

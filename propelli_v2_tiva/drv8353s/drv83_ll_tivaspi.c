@@ -5,8 +5,10 @@
  *      Author: danie
  */
 #include "drv83_datatypes.h"
+#include "drv83_ll_tivaspi.h"
 
 #define DRV_WRITE_FAIL_COUNT 3
+#define DRV_READ_REPEAT_COUNT 3
 
 void drv_spi_blocking_init()
 {
@@ -34,35 +36,36 @@ void drv_writeRegister(uint8_t regNr, uint16_t bitMask)
 
     uint16_t tword;
 
-    //adressnummer setzen (4 bit) und an position vor das rw-bit schieben
-    tword = regNr;
-    tword <<= 11;
-    // rw -bit setzen(15)
-    utils_set_bit_in_Word(&tword, 15, 0);
+    tword = regNr;                                                  //adressnummer setzen (4 bit) und an position vor das rw-bit schieben
+    tword <<= 11;                                                   // und an position vor das rw-bit schieben
+
+    utils_set_bit_in_Word(&tword, 15, 0);                           // rw -bit setzen(15)
     utils_set_bits_in_Word(&tword, bitMask, 1);
-  //  drv_csPulse();
-   // HAL_SPI_Transmit(&hspi1, (uint8_t*) &tword, 1, HAL_TIMEOUT);
     SSIDataPut(SSI0_BASE, tword);
     }
+
 void drv_readRegister(uint16_t regNr, uint16_t *data)
     {
     uint16_t tword = 0;
 
-    //adressnummer setzen (4 bit) und an position vor das rw-bit schieben
-    tword = regNr;
-    tword <<= 11;
-    // rw -bit setzen(15)
-    utils_set_bit_in_Word(&tword, 15, 1);
-   // drv_csPulse();
-   // HAL_SPI_TransmitReceive(&hspi1, (uint8_t*) &tword, (uint8_t*) data, 1,HAL_TIMEOUT);
-    SSIDataPut(SSI0_BASE, tword);
+    tword = regNr;                                                  //adressnummer setzen (4 bit)
+    tword <<= 11;                                                   // und an position vor das rw-bit schieben
+
+    utils_set_bit_in_Word(&tword, 15, 1);                           // rw -bit setzen(15)
+
+    while(SSIDataGetNonBlocking(SSI0_BASE, (uint32_t*)data)) {}     // buffer leeren, nonblocking hängt nicht falls schon leer
+
+    SSIDataPut(SSI0_BASE, (uint32_t)tword);                         //adresse mit dummyword für clockgenerierung senden
+    while(SSIBusy(SSI0_BASE))        {}
+
+    SSIDataGet(SSI0_BASE, (uint32_t*)data);
 
     }
-bool drv_writeCompareReg(uint8_t regNr, uint16_t reg)
+int drv_writeCompareReg(uint8_t regNr, uint16_t data)
     {
     uint16_t regbuffer = 0;
     uint8_t errcounter = 0;
-    drv_writeRegister(regNr, reg);
+    drv_writeRegister(regNr, data);
 
      if (errcounter == DRV_WRITE_FAIL_COUNT)
         {
@@ -73,38 +76,27 @@ bool drv_writeCompareReg(uint8_t regNr, uint16_t reg)
 
     return 1;
     }
-bool drv_readCompareReg(uint8_t regNr, uint16_t reg)
-{
-    uint16_t regbuffer = 0;
-    uint8_t errcounter = 0;
-
-    if (errcounter == DRV_WRITE_FAIL_COUNT)
-       {
-       return 0;
-    //   HAL_Delay(10);
-     //  Error_Handler();
-       }
-    drv_readRegister (regNr,&regbuffer);
-
-   return 1;
-}
-
-void drv_csPulse()
+int drv_readCompareReg(uint8_t regNr, uint16_t *data)
     {
-    //TODO: delay.c aus propelli-head mergen und mit wait_isr ergänzen
-  //  HAL_GPIO_WritePin(drv_cs_GPIO_Port, drv_cs_Pin, 0);
-   // HAL_GPIO_WritePin(drv_cs_GPIO_Port, drv_cs_Pin, 1);
-    int var = 0;
-    for (; var < 0xF; ++var)
-    {
-    var += 1;
-    }
-    //HAL_GPIO_WritePin(drv_cs_GPIO_Port, drv_cs_Pin, 0);
+    uint16_t comparebuff = 0;
+    uint8_t errcounter = DRV_READ_REPEAT_COUNT;
 
-    for (; var < 0xF; ++var)
-    {
-    var += 1;
-    }
+    while(errcounter)
+        {
+         drv_readRegister (regNr,data);
+         drv_readRegister (regNr,&comparebuff);
+         if (*data!=comparebuff)
+             {
+             errcounter--;
+             }
+         else
+             {
+             return 1;
+             }
+
+        }
+
+    return 0;
     }
 
 
