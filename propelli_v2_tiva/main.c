@@ -23,12 +23,12 @@ int main(void)
 
     drv_spi_blocking_init();
 
-    drvconfig.modeSelect = drv_pwm_3x;
+    drvconfig.modeSelect = drv_pwm_6x;
 
 
     while(1)
     {
-        drv_setOvrLoadProt(&drvconfig);
-        //drv_setPwmMode(&drvconfig);
+        //drv_setOvrLoadProt(&drvconfig);
+        drv_setPwmMode(&drvconfig);
     }
 }

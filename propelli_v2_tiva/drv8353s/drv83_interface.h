@@ -20,14 +20,25 @@ TD_DRV83 drvconfig;
 //*****************************************************************************
 //Api für die MC-Loop
 //*****************************************************************************
+void drv_spi_blocking_init();
 
 int drv_setPwmMode     (TD_DRV83 *select);
 int drv_setShuntGain   (TD_DRV83 *select);
 int drv_setOvrLoadProt (TD_DRV83 *select);
 
-//*****************************************************************************
-// Hardwarespezifische Inits
-//*****************************************************************************
-void drv_spi_blocking_init();
+
+//TODO:
+void drv_enable();
+void drv_reset();
+int drv_getFaults       (TD_DRV83 *select);
+
+int drv_setDeadtime     (TD_DRV83 *select);
+int drv_setOvrCurrProt  (TD_DRV83 *select);
+int drv_setGateCurrRise (TD_DRV83 *select);
+int drv_setGateCurrFall (TD_DRV83 *select);
+
+
+
+
 
 #endif /* DRV8353S_DRV83_INTERFACE_H_ */

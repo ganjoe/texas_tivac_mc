@@ -17,11 +17,7 @@
 #ifndef DRV8353S_DRV83_DATATYPES_H_
 #define DRV8353S_DRV83_DATATYPES_H_
 
-
-
 #include "main.h"
-
-
 
 
 //*****************************************************************************
@@ -31,7 +27,6 @@
 // bei 1x Sind die Hall Signale an den anderen Pwm-Eing�ngen verbunden
 // Siehe /doc/drv8385s_datasheet.pdf
 //*****************************************************************************
-
 
 
 typedef enum
