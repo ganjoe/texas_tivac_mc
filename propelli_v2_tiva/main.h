@@ -16,6 +16,7 @@
 #include "driverlib/gpio.h"
 #include "inc/hw_types.h"
 #include "inc/hw_memmap.h"
+#include "string.h"
 //  user
 #include "common/utils.h"
 

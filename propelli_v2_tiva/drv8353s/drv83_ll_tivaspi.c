@@ -63,7 +63,6 @@ void drv_readRegister(uint16_t regNr, uint16_t *data)
     }
 int drv_writeCompareReg(uint8_t regNr, uint16_t data)
     {
-    uint16_t regbuffer = 0;
     uint8_t errcounter = 0;
     drv_writeRegister(regNr, data);
 
