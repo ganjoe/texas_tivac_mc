@@ -2,6 +2,8 @@
 
 #include "main.h"
 #include "drv8353s/drv83_interface.h"
+#include "terminal/uart_tivac.h"
+
 
 
 #define RED_LED   GPIO_PIN_1
@@ -20,15 +22,19 @@ int main(void)
 
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED);
 
+    UARTInit();
+
+
 
     drv_spi_blocking_init();
+
 
     drvconfig.modeSelect = drv_pwm_3x;
 
 
     while(1)
     {
-        drv_setOvrLoadProt(&drvconfig);
+        //drv_setOvrLoadProt(&drvconfig);
         //drv_setPwmMode(&drvconfig);
     }
 }

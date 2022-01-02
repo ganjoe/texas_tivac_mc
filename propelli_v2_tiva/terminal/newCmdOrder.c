@@ -7,6 +7,7 @@
 
 #include "newCmdOrder.h"
 
+
 void cmd_init_callbacks(TD_CMD *asdf)
     {
     asdf->callback_len = 40;

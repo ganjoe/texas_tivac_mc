@@ -8,6 +8,7 @@
 #ifndef TERMINAL_TERMINAL_H_
 #define TERMINAL_TERMINAL_H_
 
+
 #include "main.h"
 
 typedef struct
@@ -38,9 +39,10 @@ void term_lol_setCallback(
 
 
 void    cmd_parse_string(TD_CMD* newcmd,char* string);
-void    cmd_init_callbacks(TD_CMD *newcmd);
+
+void term_tiva_init();
 
 
-
+extern TD_CMD newcmd;
 
 #endif /* TERMINAL_TERMINAL_H_ */

@@ -98,6 +98,8 @@ void cmd_parse_string(TD_CMD *newcmd, char *string)
     }    //
     }
 
+
+
 TD_CMD newcmd;
 
 
