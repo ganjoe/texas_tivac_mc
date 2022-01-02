@@ -11,7 +11,8 @@
 
 #include "main.h"
 
-
 void UARTInit();
+
+
 
 #endif /* TERMINAL_UART_TIVAC_H_ */

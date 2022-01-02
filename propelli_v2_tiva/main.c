@@ -3,6 +3,8 @@
 #include "main.h"
 #include "drv8353s/drv83_interface.h"
 #include "terminal/uart_tivac.h"
+#include "terminal/newCmdOrder.h"
+
 
 
 
@@ -24,10 +26,9 @@ int main(void)
 
     UARTInit();
 
-
+    cmd_init_callbacks(&newcmd);
 
     drv_spi_blocking_init();
-
 
     drvconfig.modeSelect = drv_pwm_3x;
 

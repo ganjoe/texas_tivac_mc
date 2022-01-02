@@ -7,20 +7,12 @@
 
 
 #include "uart_tivac.h"
-#include "terminal.h"
 
-uint32_t uartReceivedString[128];
-uint32_t uartReceivedChar;
-uint32_t uartReceivedCounter = 0;
+
+char uartReceivedString[128];
 char uartCR =13;
+uint32_t uartReceivedCounter = 0;
 
-
-
-//*****************************************************************************
-//
-// The UART interrupt handler.
-//
-//*****************************************************************************
 
 void UARTIntHandler(void)
 {
@@ -42,11 +34,11 @@ void UARTIntHandler(void)
     while(MAP_UARTCharsAvail(UART1_BASE))
         {
         uartReceivedString[uartReceivedCounter] = MAP_UARTCharGetNonBlocking(UART1_BASE);
-        if (uartReceivedString[uartReceivedCounter] == 13)
+        if (uartReceivedString[uartReceivedCounter] == uartCR)
             {
             uartReceivedCounter = 0;
-            MAP_UARTCharPutNonBlocking(UART1_BASE, uartCR);
-            //cmd_parse_string(&newcmd, (char*)uartReceivedString);
+
+            MAP_UARTCharPut(UART1_BASE, uartCR);
             }
         uartReceivedCounter++;
 
@@ -55,20 +47,6 @@ void UARTIntHandler(void)
         //MAP_UARTCharPutNonBlocking(UART1_BASE,MAP_UARTCharGetNonBlocking(UART1_BASE));
 
         }
-}
-
-void UARTSend(const uint8_t *pui8Buffer, uint32_t ui32Count)
-{
-    //
-    // Loop while there are more characters to send.
-    //
-    while(ui32Count--)
-    {
-        //
-        // Write the next character to the UART.
-        //
-        MAP_UARTCharPutNonBlocking(UART1_BASE, *pui8Buffer++);
-    }
 }
 
 void UARTInit()

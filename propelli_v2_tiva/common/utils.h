@@ -13,7 +13,7 @@
 
 void utils_set_bits_in_Word(uint16_t *word, uint16_t bitmask, int state);
 void utils_set_bit_in_Word(uint16_t *word, uint8_t pos, bool state);
-
+int utils_truncate_number_int(int *number, int min, int max);
 
 
 

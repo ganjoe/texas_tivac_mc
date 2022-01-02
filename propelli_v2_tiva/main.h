@@ -25,6 +25,9 @@
 #include "driverlib/rom_map.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/uart.h"
+#include "stdarg.h"
+#include "stdlib.h"
+#include "stdio.h"
 //  user
 #include "common/utils.h"
 

@@ -34,3 +34,21 @@ void utils_set_bit_in_Word(uint16_t *word, uint8_t pos, bool state)
         }
 
     }
+
+int utils_truncate_number_int(int *number, int min, int max)
+    {
+    int did_trunc = 0;
+
+    if (*number > max)
+    {
+    *number = max;
+    did_trunc = 1;
+    }
+    else if (*number < min)
+    {
+    *number = min;
+    did_trunc = 1;
+    }
+
+    return did_trunc;
+    }
