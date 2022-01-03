@@ -13,6 +13,6 @@
 
 void UARTInit();
 
-
+void ConfigureUART(void);
 
 #endif /* TERMINAL_UART_TIVAC_H_ */

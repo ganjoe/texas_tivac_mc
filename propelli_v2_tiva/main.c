@@ -13,6 +13,10 @@
 
 int main(void)
 {
+
+    MAP_FPUEnable();
+    MAP_FPULazyStackingEnable();
+    MAP_IntMasterEnable();
     //
     // Setup the system clock to run at 50 Mhz from PLL with crystal reference
     //
@@ -25,6 +29,11 @@ int main(void)
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED);
 
     UARTInit();
+
+
+
+
+    UARTprintf("Hello, world!\n");
 
     cmd_init_callbacks(&newcmd);
 

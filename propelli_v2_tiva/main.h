@@ -28,6 +28,7 @@
 #include "stdarg.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "common/uartstdio.h"
 //  user
 #include "common/utils.h"
 

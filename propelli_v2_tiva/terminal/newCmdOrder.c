@@ -14,6 +14,8 @@ void reset(int argc, const char **argv)
     if (argc == 2)
     {
     sscanf(argv[1], "%f", &f);
+    UARTprintf("\rcmd:\t%s",argv[0]);
+    UARTprintf("\rargs:\t%d",argc);
     }
     }
 
