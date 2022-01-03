@@ -7,11 +7,12 @@
 
 
 #include "uart_tivac.h"
+#include "newCmdOrder.h"
 
 
 char uartReceivedString[128];
 char uartCR =13;
-uint32_t uartReceivedCounter = 0;
+uint8_t uartReceivedCounter = 0;
 
 
 void UARTIntHandler(void)
@@ -37,7 +38,7 @@ void UARTIntHandler(void)
         if (uartReceivedString[uartReceivedCounter] == uartCR)
             {
             uartReceivedCounter = 0;
-
+            cmd_parse_string(&newcmd, &uartReceivedString);
             MAP_UARTCharPut(UART1_BASE, uartCR);
             }
         uartReceivedCounter++;

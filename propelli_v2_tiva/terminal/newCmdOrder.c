@@ -14,7 +14,6 @@ void reset(int argc, const char **argv)
     if (argc == 2)
     {
     sscanf(argv[1], "%f", &f);
-
     }
     }
 
@@ -33,47 +32,29 @@ void cmd_parse_lobj(TD_CMD *newcmd, TD_LINEOBJ *line)
 void cmd_parse_string(TD_CMD *newcmd, char *string)
     {
     int i;
-    char strbuffer[newcmd->callback_len];
+   // char strbuffer[newcmd->callback_len];
 
-    char* strbufferptr = &strbuffer;
-
+    char * strbufferptr; //token für strtok
+    char delimiter[] = " ";
     int ArgCount = 0;
 
-    char *ptrArgBuffer[newcmd->argument_nbr]; //max arguemtns
+    //char *ptrArgBuffer[newcmd->argument_nbr]; //max arguemtns
+    char *ptrArgBuffer[4]; //max arguemtns
 
     //cmd ist der erste stringabschnitt von links
-    strbufferptr = strtok(string, strdup(" "));
+    strbufferptr = strtok(string, delimiter);
 
     //argumente separieren, und in ptr-array speichern
     while (strbufferptr && ArgCount < 4)
     {
     ptrArgBuffer[ArgCount++] = strbufferptr;
-
-    strbufferptr = strtok(0, strdup(" "));
+    //
+    strbufferptr = strtok(0, delimiter);
     }
 
-    /*
-     if (argc == 0)
-     {
-     term_qPrintf(myTxQueueHandle, "No command received\n");
-     return;
-     }
-     if (strcmp(argv[0], "help") == 0)
-     {
-     term_qPrintf(myTxQueueHandle, "registered commands:\n");
-     for (int i = 0; i < callback_write; i++)
-     {
-     term_qPrintf(myTxQueueHandle, callbacks[i].command);
-     term_qPrintf(myTxQueueHandle, "\rhelp: ");
-     term_qPrintf(myTxQueueHandle, callbacks[i].help);
-     term_qPrintf(myTxQueueHandle, "\r");
-     }
-     }
-     */
     for (i = 0; i < newcmd->callback_write; i++)
     {
-    if (newcmd->callbacks[i].cbf != 0
-        && strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
+    if (newcmd->callbacks[i].cbf != 0 && strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
         {
         newcmd->callbacks[i].cbf(ArgCount, (const char**) ptrArgBuffer);
         return;
