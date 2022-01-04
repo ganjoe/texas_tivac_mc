@@ -5,7 +5,7 @@
 #include "terminal/uart_tivac.h"
 #include "terminal/newCmdOrder.h"
 #include "modflagtimer/modflagtimer.h"
-#include "mf_task/board_led.h"
+
 
 
 size_t ramcounter;
@@ -19,7 +19,7 @@ int main(void)
 
      SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 
-    mf_timerinit(100);
+    mf_timerinit(10000);
     mfinit_boardled();
     UARTInit();
     cmd_init_callbacks(&newcmd);
