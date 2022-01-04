@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "drv83_ll_tivaspi.h": "c",
+        "drv83_datatypes.h": "c",
+        "main.h": "c"
+    }
+}

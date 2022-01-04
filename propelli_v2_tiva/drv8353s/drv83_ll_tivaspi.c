@@ -53,9 +53,9 @@ void drv_readRegister(uint16_t regNr, uint16_t *data)
 
     utils_set_bit_in_Word(&tword, 15, 1);                           // rw -bit setzen(15)
 
-    while(SSIDataGetNonBlocking(SSI0_BASE, (uint32_t*)data)) {}     // buffer leeren, nonblocking hängt nicht falls schon leer
+    while(SSIDataGetNonBlocking(SSI0_BASE, (uint32_t*)data)) {}     // buffer leeren, nonblocking hï¿½ngt nicht falls schon leer
 
-    SSIDataPut(SSI0_BASE, (uint32_t)tword);                         //adresse mit dummyword für clockgenerierung senden
+    SSIDataPut(SSI0_BASE, (uint32_t)tword);                         //adresse mit dummyword fï¿½r clockgenerierung senden
     while(SSIBusy(SSI0_BASE))        {}
 
     SSIDataGet(SSI0_BASE, (uint32_t*)data);
@@ -63,17 +63,29 @@ void drv_readRegister(uint16_t regNr, uint16_t *data)
     }
 int drv_writeCompareReg(uint8_t regNr, uint16_t data)
     {
-    uint8_t errcounter = 0;
-    drv_writeRegister(regNr, data);
 
-     if (errcounter == DRV_WRITE_FAIL_COUNT)
-        {
-        return 0;
-     //   HAL_Delay(10);
-      //  Error_Handler();
-        }
 
-    return 1;
+    uint16_t comparebuffer = 0;
+    uint8_t errcounter = DRV_WRITE_FAIL_COUNT;
+    
+    
+    while(errcounter)
+            {
+            drv_writeRegister(regNr, data);
+            drv_readRegister(regNr, &comparebuffer);
+
+            if (data!=comparebuffer)
+                {
+                errcounter--;
+                }
+            else
+                {
+                return 1;
+                }
+
+            }
+    return 0;
+
     }
 int drv_readCompareReg(uint8_t regNr, uint16_t *data)
     {

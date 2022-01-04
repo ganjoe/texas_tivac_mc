@@ -23,22 +23,21 @@ int drv_setPwmMode(TD_DRV83 *select)
         case drv_pwm_1x:
         utils_set_bit_in_Word(&regbuffer, 5, 0);
         utils_set_bit_in_Word(&regbuffer, 6, 1);
-
         break;
+
         case drv_pwm_3x:
         utils_set_bit_in_Word(&regbuffer, 5, 1);
         utils_set_bit_in_Word(&regbuffer, 6, 0);
-
         break;
+
         case drv_pwm_6x:
         utils_set_bit_in_Word(&regbuffer, 5, 0);
         utils_set_bit_in_Word(&regbuffer, 6, 0);
-
         break;
 
         }
-    // if (drv_writeCompareReg(CSAcontrol, regbuffer))
-     //    return 1;
+     if (drv_writeCompareReg(CSAcontrol, regbuffer))
+         return 1;
     }
    return 0;
     }
@@ -87,8 +86,6 @@ int drv_setOvrLoadProt(TD_DRV83 *select)
 
     if(drv_readCompareReg(CSAcontrol, &regbuffer))
     {
-
-    //term_qPrintf(&myTxQueueHandle, "\r[drv_setOvrCurrProt] ");
 
         switch (select->OLshuntvolts)
         {
