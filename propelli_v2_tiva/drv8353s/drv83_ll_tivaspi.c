@@ -63,6 +63,8 @@ void drv_readRegister(uint16_t regNr, uint16_t *data)
     }
 int drv_writeCompareReg(uint8_t regNr, uint16_t data)
     {
+
+
     uint16_t comparebuffer = 0;
     uint8_t errcounter = DRV_WRITE_FAIL_COUNT;
     
@@ -83,6 +85,7 @@ int drv_writeCompareReg(uint8_t regNr, uint16_t data)
 
             }
     return 0;
+
     }
 int drv_readCompareReg(uint8_t regNr, uint16_t *data)
     {
