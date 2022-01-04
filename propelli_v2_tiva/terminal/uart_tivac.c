@@ -69,7 +69,7 @@ UARTInit()
     UARTClockSourceSet(UART1_BASE, UART_CLOCK_SYSTEM);
 
     // nicht modifiziert. aus "hello" example
-    UARTStdioConfig(1, 115200, 50000000);
+    UARTStdioConfig(1, 115200, SysCtlClockGet());
 
     // notwendig für non-blocking receive
     MAP_IntEnable(INT_UART1);

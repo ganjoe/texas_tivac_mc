@@ -5,36 +5,26 @@
 #include "terminal/uart_tivac.h"
 #include "terminal/newCmdOrder.h"
 #include "modflagtimer/modflagtimer.h"
+#include "mf_task/board_led.h"
 
-
-
-
-#define RED_LED   GPIO_PIN_1
 
 size_t ramcounter;
+
 int main(void)
 {
 
     MAP_FPUEnable();
     MAP_FPULazyStackingEnable();
     MAP_IntMasterEnable();
-    //
-    // Setup the system clock to run at 50 Mhz from PLL with crystal reference
-    //
-    SysCtlClockSet(SYSCTL_SYSDIV_4|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
-/*
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF))   { }
+     SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 
-    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED);
-*/
-
-    mf_timerinit();
+    mf_timerinit(100);
+    mfinit_boardled();
     UARTInit();
     cmd_init_callbacks(&newcmd);
 
-    UARTprintf("System Clock@ %d Mhz\r",SysCtlClockGet()/1000000);
+    UARTprintf("System Clock@ %d Mhz\r",SysCtlClockGet()/1000000);//SysCtlClockGet ist bei 80Mhz buggy
     UARTprintf("Flash Size@ %d kbyte\r",SysCtlFlashSizeGet()/1000);
     UARTprintf("SRAM Size@ %d kbyte\r",SysCtlSRAMSizeGet()/1000);
     UARTprintf("type help\r");
@@ -46,6 +36,9 @@ int main(void)
 
     while(1)
     {
+        task_toggle_blue_led(&mf_led_blue_toggle);
+        task_toggle_blue_led(&mf_led_red_toggle);
+        task_toggle_blue_led(&mf_led_green_toggle);
         //drv_setOvrLoadProt(&drvconfig);
 
         //drv_setPwmMode(&drvconfig);

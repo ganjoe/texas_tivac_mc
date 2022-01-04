@@ -32,5 +32,6 @@
 #include "driverlib/timer.h"
 //  user
 #include "common/utils.h"
+#include "modflagtimer/modflagtimer.h"
 
 #endif /* MAIN_H_ */
