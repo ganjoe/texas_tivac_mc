@@ -18,9 +18,9 @@ void mfinit_boardled()
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, BLU_LED);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, TESTPIN);
 
-    modflag_init(&mf_led_green_toggle, 10000.0,  0.5);
-    modflag_init(&mf_led_red_toggle, 10000.0,  1);
-    modflag_init(&mf_led_blue_toggle, 10000.0,  2);
+    modflag_init(&mf_led_green_toggle, 10000.0,  10);
+    modflag_init(&mf_led_red_toggle, 10000.0,  10);
+    modflag_init(&mf_led_blue_toggle, 10000.0,  10);
     /*GPIOPinWrite(GPIO_PORTF_BASE, RED_LED, RED_LED);
     GPIOPinWrite(GPIO_PORTF_BASE, GRN_LED, GRN_LED);
     GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, BLU_LED);*/

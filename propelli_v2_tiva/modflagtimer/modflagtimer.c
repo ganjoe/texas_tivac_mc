@@ -15,6 +15,7 @@ void mf_timerinit(uint32_t hz, MODFLAGTIMER *thismf)
     uint32_t timerclock = SysCtlClockGet(); //in Hz
     uint32_t timertop;
     timertop= timerclock / hz /2;
+    thismf->freq = (float)hz;
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);

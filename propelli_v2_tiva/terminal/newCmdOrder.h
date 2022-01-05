@@ -8,7 +8,7 @@
 #ifndef TERMINAL_NEWCMDORDER_H_
 #define TERMINAL_NEWCMDORDER_H_
 
-#include "common/dbase.h"
+#include "main.h"
 
 typedef struct
     {
@@ -36,12 +36,14 @@ void term_lol_setCallback(
             const char *arg_names,  \
             void (*cbf)(int argc, const char **argv));
 
-void    cmd_parse_lobj(TD_CMD* newcmd,TD_LINEOBJ *line);
+
 void    cmd_parse_string(TD_CMD* newcmd,char* string);
 void    cmd_init_callbacks(TD_CMD *newcmd);
 
 /*------------propelli commands--------------*/
-
+void    bledred(int argc, const char **argv);
+void    bledgreen(int argc, const char **argv);
+void    bledblue(int argc, const char **argv);
 
 void    reset(int argc, const char **argv);
 void    settime(int argc, const char **argv);
