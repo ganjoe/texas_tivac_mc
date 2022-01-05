@@ -18,15 +18,15 @@ void mfinit_boardled()
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, BLU_LED);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, TESTPIN);
 
-    modflag_init(&mf_led_green_toggle, 10000.0,  0.25);
-    modflag_init(&mf_led_red_toggle, 10000.0,  1);
-    modflag_init(&mf_led_blue_toggle, 10000.0,  0.5);
+    modflag_init(&mf_led_green_toggle, mf_systick,  0.25);
+    modflag_init(&mf_led_red_toggle, mf_systick,  1);
+    modflag_init(&mf_led_blue_toggle, mf_systick,  0.5);
     /*GPIOPinWrite(GPIO_PORTF_BASE, RED_LED, RED_LED);
     GPIOPinWrite(GPIO_PORTF_BASE, GRN_LED, GRN_LED);
     GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, BLU_LED);*/
 }
 
-void toggle_testpin(MODFLAGTIMER *thismf)
+void toggle_testpin(MODFLAG *thismf)
     {
         if (thismf->rampcounter)
             {
@@ -40,9 +40,9 @@ void toggle_testpin(MODFLAGTIMER *thismf)
             }
     }
 
-void task_toggle_green_led(MODFLAGTIMER *thismf)
+void task_toggle_green_led(MODFLAG *thismf)
     {
-    if (thismf->flag && thismf->init_done)
+    if (thismf->flag)
         {
         thismf->repeat = modflag_tickdiff(thismf);
         if (thismf->rampcounter)
@@ -60,9 +60,9 @@ void task_toggle_green_led(MODFLAGTIMER *thismf)
         }
     }
 
-void task_toggle_red_led(MODFLAGTIMER *thismf)
+void task_toggle_red_led(MODFLAG *thismf)
     {
-    if (thismf->flag && thismf->init_done)
+    if (thismf->flag)
         {
         thismf->repeat = modflag_tickdiff(thismf);
         if (thismf->rampcounter)
@@ -80,9 +80,9 @@ void task_toggle_red_led(MODFLAGTIMER *thismf)
         }
     }
 
-void task_toggle_blue_led(MODFLAGTIMER *thismf)
+void task_toggle_blue_led(MODFLAG *thismf)
     {
-    if (thismf->flag && thismf->init_done)
+    if (thismf->flag)
         {
         thismf->repeat = modflag_tickdiff(thismf);
         if (thismf->rampcounter)

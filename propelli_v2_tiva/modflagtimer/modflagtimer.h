@@ -8,6 +8,7 @@
 #ifndef MODFLAGTIMER_MODFLAGTIMER_H_
 #define MODFLAGTIMER_MODFLAGTIMER_H_
 
+
 typedef struct
     {
     int divisor;
@@ -26,17 +27,17 @@ typedef struct
      */
     int flag, flag_delay, flag_reset, init_done;
 
-    } MODFLAGTIMER;
+    } MODFLAG;
 
-    void modflag_init(MODFLAGTIMER *thismf, float systick, float setpoint_hz);
-    void modflag_upd_regular(MODFLAGTIMER *thismf);
-    void modflag_enable(MODFLAGTIMER *thismf);
-    void modflag_disable(MODFLAGTIMER *thismf);
-    void modflag_set_delay_until_callback(MODFLAGTIMER *thismf);
-    uint64_t modflag_tickdiff(MODFLAGTIMER *cnt);
+    void modflag_init(MODFLAG *thismf, MODFLAG systick, float setpoint_hz);
+    void modflag_upd_regular(MODFLAG *thismf);
+    void modflag_enable(MODFLAG *thismf);
+    void modflag_disable(MODFLAG *thismf);
+    void modflag_set_delay_until_callback(MODFLAG *thismf);
+    uint64_t modflag_tickdiff(MODFLAG *cnt);
 
-void mf_timerinit(uint32_t hz, MODFLAGTIMER *thismf);
+void mf_timerinit(uint32_t hz, MODFLAG *thismf);
 
-extern MODFLAGTIMER mf_global_systick;
+extern MODFLAG mf_systick;
 
 #endif /* MODFLAGTIMER_MODFLAGTIMER_H_ */
