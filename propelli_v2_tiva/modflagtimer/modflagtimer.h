@@ -35,7 +35,7 @@ typedef struct
     void modflag_set_delay_until_callback(MODFLAGTIMER *thismf);
     uint64_t modflag_tickdiff(MODFLAGTIMER *cnt);
 
-void mf_timerinit(int microseconds);
+void mf_timerinit(uint32_t hz, MODFLAGTIMER *thismf);
 
 extern MODFLAGTIMER mf_global_systick;
 

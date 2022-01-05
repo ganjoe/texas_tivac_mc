@@ -16,6 +16,7 @@ void mfinit_boardled()
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GRN_LED);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, BLU_LED);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, TESTPIN);
 
     modflag_init(&mf_led_green_toggle, 10000.0,  0.5);
     modflag_init(&mf_led_red_toggle, 10000.0,  1);
@@ -24,6 +25,20 @@ void mfinit_boardled()
     GPIOPinWrite(GPIO_PORTF_BASE, GRN_LED, GRN_LED);
     GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, BLU_LED);*/
 }
+
+void toggle_testpin(MODFLAGTIMER *thismf)
+    {
+        if (thismf->rampcounter)
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, TESTPIN, TESTPIN);
+            thismf->rampcounter = 0;
+            }
+        else
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, TESTPIN, 0);
+            thismf->rampcounter = 1;
+            }
+    }
 
 void task_toggle_green_led(MODFLAGTIMER *thismf)
     {

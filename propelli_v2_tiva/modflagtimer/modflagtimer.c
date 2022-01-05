@@ -9,15 +9,19 @@
 
 MODFLAGTIMER mf_global_systick;
 
-void mf_timerinit(int hz)
+void mf_timerinit(uint32_t hz, MODFLAGTIMER *thismf)
 {
 
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-    MAP_TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
-    MAP_TimerLoadSet(TIMER0_BASE, TIMER_A, 6600);
-    MAP_IntEnable(INT_TIMER0A);
-    MAP_TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-    MAP_TimerEnable(TIMER0_BASE, TIMER_A);
+    uint32_t timerclock = SysCtlClockGet(); //in Hz
+    uint32_t timertop;
+    timertop= timerclock / hz /2;
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+    TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+    TimerLoadSet(TIMER0_BASE, TIMER_A, timertop);
+    IntEnable(INT_TIMER0A);
+    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+    TimerEnable(TIMER0_BASE, TIMER_A);
 }
 
 void modflag_init(MODFLAGTIMER *thismf, float systick, float setpoint_hz)
@@ -54,7 +58,7 @@ void Timer0IntHandler(void)
     //
     MAP_TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     ++mf_global_systick.ovf;
-
+    toggle_testpin(&mf_testpin);
     modflag_upd_regular(&mf_led_green_toggle);
     modflag_upd_regular(&mf_led_red_toggle);
     modflag_upd_regular(&mf_led_blue_toggle);

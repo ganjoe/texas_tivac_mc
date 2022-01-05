@@ -17,9 +17,9 @@ int main(void)
     MAP_FPULazyStackingEnable();
     MAP_IntMasterEnable();
 
-     SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+    SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 
-    mf_timerinit(10000);
+    mf_timerinit(10000, &mf_global_systick);
     mfinit_boardled();
     UARTInit();
     cmd_init_callbacks(&newcmd);
