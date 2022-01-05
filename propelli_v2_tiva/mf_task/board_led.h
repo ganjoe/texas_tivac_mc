@@ -13,8 +13,8 @@
 
 
 #define RED_LED   GPIO_PIN_1
-#define GRN_LED   GPIO_PIN_2
-#define BLU_LED   GPIO_PIN_3
+#define BLU_LED   GPIO_PIN_2
+#define GRN_LED   GPIO_PIN_3
 #define TESTPIN   GPIO_PIN_4
 
  MODFLAGTIMER mf_testpin;
