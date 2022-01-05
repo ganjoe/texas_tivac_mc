@@ -43,7 +43,11 @@ void UARTIntHandler(void)
             cmd_parse_string(&newcmd, &uartReceivedString);
             uartReceivedCounter = 0;
             }
-        uartReceivedCounter++;
+        else
+            {
+            uartReceivedCounter++;
+            }
+
 
         //
         // Read the next character from the UART and write it back to the UART.
