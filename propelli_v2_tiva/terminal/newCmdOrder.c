@@ -19,50 +19,143 @@ void reset(int argc, const char **argv)
     }
     }
 
+void bledred(int argc, const char **argv)
+    {
+    int state = -1;
+    if (argc ==2)
+        {
+        sscanf(argv[1], "%d", &state);
+        if(state)
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, RED_LED, RED_LED);
+            UARTprintf("\rRED_LED ON");
+            }
+        else
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, RED_LED, 0);
+            UARTprintf("\rRED_LED OFF");
+            }
+        }
+    if (argc == 1)
+    {
+        if (toggle_red_led())
+        {
+            UARTprintf("\rRED_LED ON");
+        }
+        else
+        {
+            UARTprintf("\rRED_LED OFF");
+        }
+
+    }
+    }
+void bledgreen(int argc, const char **argv)
+    {
+    int state = -1;
+    if (argc ==2)
+        {
+        sscanf(argv[1], "%d", &state);
+        if(state)
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, GRN_LED, GRN_LED);
+            UARTprintf("\rGRN_LED ON");
+            }
+        else
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, GRN_LED, 0);
+            UARTprintf("\rGRN_LED OFF");
+            }
+        }
+    if (argc == 1)
+    {
+        if(toggle_green_led())
+        {
+            UARTprintf("\rGRN_LED ON");
+        }
+        else
+        {
+            UARTprintf("\rGRN_LED OFF");
+        }
+    }
+    }
+void bledblue(int argc, const char **argv)
+    {
+    int state = -1;
+    if (argc == 2)
+        {
+        sscanf(argv[1], "%d", &state);
+        if(state)
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, BLU_LED);
+            UARTprintf("\rboard BLU_LED ON");
+            }
+        else
+            {
+            GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, 0);
+            UARTprintf("\rboard BLU_LED OFF");
+            }
+        }
+    if (argc == 1)
+    {
+        if(toggle_blue_led())
+        {
+            UARTprintf("\rboard BLU_LED ON");
+        }
+        else
+        {
+            UARTprintf("\rboard BLU_LED OFF");
+        }
+
+    }
+    }
+
+
+
+
 void cmd_init_callbacks(TD_CMD *asdf)
     {
     asdf->callback_len = 40;
     asdf->argument_nbr = 4;
 
-    term_lol_setCallback(asdf, "reset", "mcu reset", "1,0 uint", reset);
+    term_lol_setCallback(asdf, "reset", "mcu reset", "1,0", reset);
+    term_lol_setCallback(asdf, "bledred", "switch board led", "1,0", bledred);
+    term_lol_setCallback(asdf, "bledgreen", "switch board led", "1,0", bledgreen);
+    term_lol_setCallback(asdf, "bledblue", "switch board led", "1,0", bledblue);
 
     }
-void cmd_parse_lobj(TD_CMD *newcmd, TD_LINEOBJ *line)
-    {
-    cmd_parse_string(newcmd, line->string);
-    }
-void cmd_parse_string(TD_CMD *newcmd, char *string)
-    {
+
+void cmd_parse_string(TD_CMD *newcmd,char *string)
+{
     int i;
-   // char strbuffer[newcmd->callback_len];
+    // char strbuffer[newcmd->callback_len];
 
-    char * strbufferptr; //token für strtok
+    char *strbufferptr; //token für strtok
     char delimiter[] = " ";
+
     int ArgCount = 0;
 
-    //char *ptrArgBuffer[newcmd->argument_nbr]; //max arguemtns
+    // pointerarry für argumente
     char *ptrArgBuffer[4]; //max arguemtns
 
-    //cmd ist der erste stringabschnitt von links
     strbufferptr = strtok(string, delimiter);
 
     //argumente separieren, und in ptr-array speichern
     while (strbufferptr && ArgCount < 4)
-    {
-    ptrArgBuffer[ArgCount++] = strbufferptr;
-    //
-    strbufferptr = strtok(0, delimiter);
-    }
+        {
+        ptrArgBuffer[ArgCount++] = strbufferptr;
+        //
+        strbufferptr = strtok(0, delimiter);
+        }
 
     for (i = 0; i < newcmd->callback_write; i++)
-    {
-    if (newcmd->callbacks[i].cbf != 0 && strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
         {
-        newcmd->callbacks[i].cbf(ArgCount, (const char**) ptrArgBuffer);
-        return;
-        }
+        if (strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
+            {
+            newcmd->callbacks[i].cbf(ArgCount, (const char**) ptrArgBuffer);
+            return;
+            }
     }    //
-    }
+}
 void term_lol_setCallback(TD_CMD *newcmd, const char *command, const char *help,const char *arg_names, void (*cbf)(int argc, const char **argv))
     {
     int i;

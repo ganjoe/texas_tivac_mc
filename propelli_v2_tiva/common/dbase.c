@@ -9,6 +9,7 @@
 #include "dbase.h"
 #include "main.h"
 
+/*
 void dbase_Make(TD_LINEOBJ *line,const char *filename, const char *string,
     const char *header, const char *postfix, uint16_t *linenr, const char *fmt, ...)
     {
@@ -19,14 +20,14 @@ void dbase_Make(TD_LINEOBJ *line,const char *filename, const char *string,
     int len = 0;
 
     // no vsprint paramlist and already formatet string is given
-    /*-----------------------------------------------------------*/
+    -----------------------------------------------------------
     if ((fmt == 0) & (string != 0))
     {
     snprintf(pbuffer, TD_LINEOBJ_MAX_SSIZE, string);
     strcpy(line->string, pbuffer);
     }
     //  printing to lineobject with given vsprintf format string
-    /*-----------------------------------------------------------*/
+    -----------------------------------------------------------
     if ((fmt != 0) & (string == 0))
     {
     memset(pbuffer, 1, TD_LINEOBJ_MAX_SSIZE);
@@ -37,13 +38,13 @@ void dbase_Make(TD_LINEOBJ *line,const char *filename, const char *string,
     va_end(argp);
     }
     // printing double value with default format
-    /*-----------------------------------------------------------*/
+    -----------------------------------------------------------
     if ((fmt == 0) & (string == 0))
     {
     snprintf(line->string, UART_PRINTBUFFER, "%.4g", line->value);
     }
     //
-    /*-----------------------------------------------------------*/
+    -----------------------------------------------------------
     if (filename == 0)
     {
     snprintf( pbuffer, 2, " ");
@@ -57,7 +58,7 @@ void dbase_Make(TD_LINEOBJ *line,const char *filename, const char *string,
     strcpy( line->filename, pbuffer);
     }
     //
-    /*-----------------------------------------------------------*/
+    -----------------------------------------------------------
     if (header == 0)
     {
      snprintf( pbuffer, 2, " ");
@@ -72,7 +73,7 @@ void dbase_Make(TD_LINEOBJ *line,const char *filename, const char *string,
      strcpy( line->header, pbuffer);
     }
     //
-    /*-----------------------------------------------------------*/
+    -----------------------------------------------------------
     if (postfix == 0)
     {
      snprintf( pbuffer, 2, " ");
@@ -85,7 +86,7 @@ void dbase_Make(TD_LINEOBJ *line,const char *filename, const char *string,
     snprintf( pbuffer, len+1, postfix);
     strcpy( line->postfix, pbuffer);
     }
-    /*-----------------------------------------------------------*/
+    -----------------------------------------------------------
 
     // dont overwrite in case of static usage
     if (linenr != 0)
@@ -96,4 +97,4 @@ void dbase_Make(TD_LINEOBJ *line,const char *filename, const char *string,
     if (linenr != 0)
     line->linenr = *linenr;
 
-    }
+    }*/

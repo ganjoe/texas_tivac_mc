@@ -4,49 +4,54 @@
 #include "drv8353s/drv83_interface.h"
 #include "terminal/uart_tivac.h"
 #include "terminal/newCmdOrder.h"
-
-
-
-
-#define RED_LED   GPIO_PIN_1
+#include "modflagtimer/modflagtimer.h"
 
 size_t ramcounter;
+
 int main(void)
 {
 
+    // init für system
     MAP_FPUEnable();
     MAP_FPULazyStackingEnable();
     MAP_IntMasterEnable();
-    //
-    // Setup the system clock to run at 50 Mhz from PLL with crystal reference
-    //
-    SysCtlClockSet(SYSCTL_SYSDIV_4|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+    SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    // init für systick
+    mf_timerinit(10000, &mf_systick);
 
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF))   { }
+    // init für modflags
+    mfinit_boardled();
 
-    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED);
-
+    // init für uart-terminal
     UARTInit();
 
-    UARTprintf("System Clock@ %d Mhz\r",SysCtlClockGet()/1000000);
-    UARTprintf("Flash Size@ %d kbyte\r",SysCtlFlashSizeGet()/1000);
-    UARTprintf("SRAM Size@ %d kbyte\r",SysCtlSRAMSizeGet()/1000);
-
-    ramcounter = __TI_heap_total_available();
-
-
-
+    // init für terminal-callback-funktionen
     cmd_init_callbacks(&newcmd);
 
+     // init für spi
     drv_spi_blocking_init();
 
+    // pseudoinfos
+    UARTprintf("System Clock@ %d Mhz\r",SysCtlClockGet()/1000000);//SysCtlClockGet ist bei 80Mhz buggy
+    UARTprintf("Flash Size@ %d kbyte\r",SysCtlFlashSizeGet()/1000);
+    UARTprintf("SRAM Size@ %d kbyte\r",SysCtlSRAMSizeGet()/1000);
+    UARTprintf("Systick @ %d Hz\r",(int)mf_systick.freq);
+    UARTprintf("type help\r");
+
+
+
+    //testconfig
     drvconfig.modeSelect = drv_pwm_6x;
 
 
     while(1)
     {
+        /**/
+        task_toggle_blue_led(&mf_led_blue_toggle);
+        task_toggle_red_led(&mf_led_red_toggle);
+        task_toggle_green_led(&mf_led_green_toggle);
+
         //drv_setOvrLoadProt(&drvconfig);
 
         //drv_setPwmMode(&drvconfig);
