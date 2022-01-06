@@ -39,7 +39,7 @@ void UARTIntHandler(void)
             {
             // /r durch /0 ersetzen
             uartReceivedString[uartReceivedCounter] = 0;
-            cmd_parse_string(&newcmd, &uartReceivedString);
+            cmd_parse_string(&newcmd, (char*)uartReceivedString);
             uartReceivedCounter = 0;
             }
         else

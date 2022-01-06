@@ -124,7 +124,7 @@ void cmd_init_callbacks(TD_CMD *asdf)
 
     }
 
-void cmd_parse_string(TD_CMD *newcmd, char *string)
+void cmd_parse_string(TD_CMD *newcmd,char *string)
 {
     int i;
     // char strbuffer[newcmd->callback_len];
