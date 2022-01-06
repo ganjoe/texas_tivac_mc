@@ -28,7 +28,7 @@ void bledred(int argc, const char **argv)
         if(state)
             {
             GPIOPinWrite(GPIO_PORTF_BASE, RED_LED, RED_LED);
-            UARTprintf("\rrRED_LED ON");
+            UARTprintf("\rRED_LED ON");
             }
         else
             {
@@ -36,6 +36,18 @@ void bledred(int argc, const char **argv)
             UARTprintf("\rRED_LED OFF");
             }
         }
+    if (argc == 1)
+    {
+        if (toggle_red_led())
+        {
+            UARTprintf("\rRED_LED ON");
+        }
+        else
+        {
+            UARTprintf("\rRED_LED OFF");
+        }
+
+    }
     }
 void bledgreen(int argc, const char **argv)
     {
@@ -54,6 +66,17 @@ void bledgreen(int argc, const char **argv)
             UARTprintf("\rGRN_LED OFF");
             }
         }
+    if (argc == 1)
+    {
+        if(toggle_green_led())
+        {
+            UARTprintf("\rGRN_LED ON");
+        }
+        else
+        {
+            UARTprintf("\rGRN_LED OFF");
+        }
+    }
     }
 void bledblue(int argc, const char **argv)
     {
@@ -74,9 +97,18 @@ void bledblue(int argc, const char **argv)
         }
     if (argc == 1)
     {
-        toggle_blue_led();
+        if(toggle_blue_led())
+        {
+            UARTprintf("\rboard BLU_LED ON");
+        }
+        else
+        {
+            UARTprintf("\rboard BLU_LED OFF");
+        }
+
     }
     }
+
 
 
 
@@ -93,11 +125,11 @@ void cmd_init_callbacks(TD_CMD *asdf)
     }
 
 void cmd_parse_string(TD_CMD *newcmd, char *string)
-    {
+{
     int i;
-   // char strbuffer[newcmd->callback_len];
+    // char strbuffer[newcmd->callback_len];
 
-    char * strbufferptr; //token für strtok
+    char *strbufferptr; //token für strtok
     char delimiter[] = " ";
 
     int ArgCount = 0;
@@ -105,37 +137,25 @@ void cmd_parse_string(TD_CMD *newcmd, char *string)
     // pointerarry für argumente
     char *ptrArgBuffer[4]; //max arguemtns
 
-    //prüfen ob der string ein argument hat (d.h. ein delimiter)
-    //if(strstr(string, delimiter))
-    //    {
-        strbufferptr = strtok(string, delimiter);
+    strbufferptr = strtok(string, delimiter);
 
-        //argumente separieren, und in ptr-array speichern
-        while (strbufferptr && ArgCount < 4)
-            {
-            ptrArgBuffer[ArgCount++] = strbufferptr;
-            //
-            strbufferptr = strtok(0, delimiter);
-            }
-        //}
-
- //   else
-  //      {
-   //     ptrArgBuffer[0] = string;
-
-   //     }
-
-
+    //argumente separieren, und in ptr-array speichern
+    while (strbufferptr && ArgCount < 4)
+        {
+        ptrArgBuffer[ArgCount++] = strbufferptr;
+        //
+        strbufferptr = strtok(0, delimiter);
+        }
 
     for (i = 0; i < newcmd->callback_write; i++)
         {
-        if (newcmd->callbacks[i].cbf != 0 && strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
+        if (strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
             {
             newcmd->callbacks[i].cbf(ArgCount, (const char**) ptrArgBuffer);
             return;
             }
-        }    //
-    }
+    }    //
+}
 void term_lol_setCallback(TD_CMD *newcmd, const char *command, const char *help,const char *arg_names, void (*cbf)(int argc, const char **argv))
     {
     int i;
