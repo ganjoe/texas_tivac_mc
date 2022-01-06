@@ -10,13 +10,10 @@
 #include "newCmdOrder.h"
 
 
-char uartReceivedString[128];
+char uartReceivedString[256];
 
 char uartCR =13;
 uint8_t uartReceivedCounter = 0;
-
-
-
 
 void UARTIntHandler(void)
 {
@@ -40,6 +37,8 @@ void UARTIntHandler(void)
         uartReceivedString[uartReceivedCounter] = MAP_UARTCharGetNonBlocking(UART1_BASE);
         if (uartReceivedString[uartReceivedCounter] == uartCR)
             {
+            // /r durch /0 ersetzen
+            uartReceivedString[uartReceivedCounter] = 0;
             cmd_parse_string(&newcmd, &uartReceivedString);
             uartReceivedCounter = 0;
             }
@@ -47,12 +46,6 @@ void UARTIntHandler(void)
             {
             uartReceivedCounter++;
             }
-
-
-        //
-        // Read the next character from the UART and write it back to the UART.
-        //MAP_UARTCharPutNonBlocking(UART1_BASE,MAP_UARTCharGetNonBlocking(UART1_BASE));
-
         }
 }
 
@@ -78,6 +71,8 @@ UARTInit()
     // notwendig für non-blocking receive
     MAP_IntEnable(INT_UART1);
     MAP_UARTIntEnable(UART1_BASE, UART_INT_RX | UART_INT_RT);
+
+    memset(uartReceivedString, '$', 256) ;
 }
 
 char uartTranceiveString[128];

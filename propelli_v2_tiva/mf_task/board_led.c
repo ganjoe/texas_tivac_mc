@@ -100,3 +100,14 @@ void task_toggle_blue_led(MODFLAG *thismf)
         }
     }
 
+void toggle_blue_led()
+    {
+    if (GPIOPinRead(GPIO_PORTF_BASE, BLU_LED))
+        {
+        GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, 0);
+        }
+    else
+        {
+        GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, BLU_LED);
+        }
+    }

@@ -58,7 +58,7 @@ void bledgreen(int argc, const char **argv)
 void bledblue(int argc, const char **argv)
     {
     int state = -1;
-    if (argc ==2)
+    if (argc == 2)
         {
         sscanf(argv[1], "%d", &state);
         if(state)
@@ -72,6 +72,10 @@ void bledblue(int argc, const char **argv)
             UARTprintf("\rboard BLU_LED OFF");
             }
         }
+    if (argc == 1)
+    {
+        toggle_blue_led();
+    }
     }
 
 
@@ -95,30 +99,42 @@ void cmd_parse_string(TD_CMD *newcmd, char *string)
 
     char * strbufferptr; //token für strtok
     char delimiter[] = " ";
+
     int ArgCount = 0;
 
-    //char *ptrArgBuffer[newcmd->argument_nbr]; //max arguemtns
+    // pointerarry für argumente
     char *ptrArgBuffer[4]; //max arguemtns
 
-    //cmd ist der erste stringabschnitt von links
-    strbufferptr = strtok(string, delimiter);
+    //prüfen ob der string ein argument hat (d.h. ein delimiter)
+    //if(strstr(string, delimiter))
+    //    {
+        strbufferptr = strtok(string, delimiter);
 
-    //argumente separieren, und in ptr-array speichern
-    while (strbufferptr && ArgCount < 4)
-    {
-    ptrArgBuffer[ArgCount++] = strbufferptr;
-    //
-    strbufferptr = strtok(0, delimiter);
-    }
+        //argumente separieren, und in ptr-array speichern
+        while (strbufferptr && ArgCount < 4)
+            {
+            ptrArgBuffer[ArgCount++] = strbufferptr;
+            //
+            strbufferptr = strtok(0, delimiter);
+            }
+        //}
+
+ //   else
+  //      {
+   //     ptrArgBuffer[0] = string;
+
+   //     }
+
+
 
     for (i = 0; i < newcmd->callback_write; i++)
-    {
-    if (newcmd->callbacks[i].cbf != 0 && strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
         {
-        newcmd->callbacks[i].cbf(ArgCount, (const char**) ptrArgBuffer);
-        return;
-        }
-    }    //
+        if (newcmd->callbacks[i].cbf != 0 && strcmp(ptrArgBuffer[0], newcmd->callbacks[i].command) == 0)
+            {
+            newcmd->callbacks[i].cbf(ArgCount, (const char**) ptrArgBuffer);
+            return;
+            }
+        }    //
     }
 void term_lol_setCallback(TD_CMD *newcmd, const char *command, const char *help,const char *arg_names, void (*cbf)(int argc, const char **argv))
     {
