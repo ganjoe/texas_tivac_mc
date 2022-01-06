@@ -6,8 +6,6 @@
 #include "terminal/newCmdOrder.h"
 #include "modflagtimer/modflagtimer.h"
 
-size_t ramcounter;
-
 int main(void)
 {
 
