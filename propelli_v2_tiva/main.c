@@ -53,9 +53,7 @@ int main(void)
     while(1)
     {
         /**/
-        task_toggle_blue_led(&mf_led_blue_toggle);
-        task_toggle_red_led(&mf_led_red_toggle);
-        task_toggle_green_led(&mf_led_green_toggle);
+
 
         //drv_setOvrLoadProt(&drvconfig);
 

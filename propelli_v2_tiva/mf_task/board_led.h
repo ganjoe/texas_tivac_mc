@@ -26,8 +26,6 @@ void task_toggle_green_led(MODFLAG *thismf);
 void task_toggle_red_led(MODFLAG *thismf);
 void task_toggle_blue_led(MODFLAG *thismf);
 
-int toggle_blue_led();
-int toggle_red_led();
-int toggle_green_led();
+
 
 #endif /* MF_TASK_BOARD_LED_H_ */
