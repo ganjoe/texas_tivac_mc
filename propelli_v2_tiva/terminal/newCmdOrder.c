@@ -6,6 +6,7 @@
  */
 
 #include  "newCmdOrder.h"
+#include "digital_IO/input_output.h"
 
 void reset(int argc, const char **argv)
     {
@@ -27,27 +28,27 @@ void bledred(int argc, const char **argv)
         sscanf(argv[1], "%d", &state);
         if(state)
             {
-            GPIOPinWrite(GPIO_PORTF_BASE, RED_LED, RED_LED);
+            pinset(led_red, 1);
             UARTprintf("\rRED_LED ON");
             }
         else
             {
-            GPIOPinWrite(GPIO_PORTF_BASE, RED_LED, 0);
+            pinset(led_red, 0);
             UARTprintf("\rRED_LED OFF");
             }
         }
     if (argc == 1)
-    {
-        if (toggle_red_led())
         {
+        if (pintoggle(led_red))
+            {
             UARTprintf("\rRED_LED ON");
-        }
+            }
         else
-        {
+            {
             UARTprintf("\rRED_LED OFF");
-        }
+            }
 
-    }
+        }
     }
 void bledgreen(int argc, const char **argv)
     {
@@ -57,18 +58,18 @@ void bledgreen(int argc, const char **argv)
         sscanf(argv[1], "%d", &state);
         if(state)
             {
-            GPIOPinWrite(GPIO_PORTF_BASE, GRN_LED, GRN_LED);
+            pinset(led_green, 1);
             UARTprintf("\rGRN_LED ON");
             }
         else
             {
-            GPIOPinWrite(GPIO_PORTF_BASE, GRN_LED, 0);
+            pinset(led_green, 0);
             UARTprintf("\rGRN_LED OFF");
             }
         }
     if (argc == 1)
     {
-        if(toggle_green_led())
+        if(pintoggle(led_green))
         {
             UARTprintf("\rGRN_LED ON");
         }
@@ -86,30 +87,27 @@ void bledblue(int argc, const char **argv)
         sscanf(argv[1], "%d", &state);
         if(state)
             {
-            GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, BLU_LED);
-            UARTprintf("\rboard BLU_LED ON");
+           pinset(led_blue, 1);
+           UARTprintf("\rBLUE_LED ON");
             }
         else
             {
-            GPIOPinWrite(GPIO_PORTF_BASE, BLU_LED, 0);
-            UARTprintf("\rboard BLU_LED OFF");
+            pinset(led_blue, 0);
+            UARTprintf("\rBLUE_LED OFF");
             }
         }
     if (argc == 1)
-    {
-        if(toggle_blue_led())
         {
-            UARTprintf("\rboard BLU_LED ON");
-        }
+        if(pintoggle(led_blue))
+            {
+            UARTprintf("\rBLUE_LED ON");
+            }
         else
-        {
-            UARTprintf("\rboard BLU_LED OFF");
+            {
+            UARTprintf("\rBLUE_LED OFF");
+            }
         }
-
     }
-    }
-
-
 
 
 void cmd_init_callbacks(TD_CMD *asdf)
@@ -123,7 +121,6 @@ void cmd_init_callbacks(TD_CMD *asdf)
     term_lol_setCallback(asdf, "bledblue", "switch board led", "1,0", bledblue);
 
     }
-
 void cmd_parse_string(TD_CMD *newcmd,char *string)
 {
     int i;

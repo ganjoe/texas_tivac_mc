@@ -12,10 +12,7 @@
 #include "main.h"
 
 
-#define RED_LED   GPIO_PIN_1
-#define BLU_LED   GPIO_PIN_2
-#define GRN_LED   GPIO_PIN_3
-#define TESTPIN   GPIO_PIN_4
+
 
  MODFLAG mf_testpin;
  MODFLAG mf_led_red_toggle;

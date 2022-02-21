@@ -5,6 +5,7 @@
 #include "terminal/uart_tivac.h"
 #include "terminal/newCmdOrder.h"
 #include "modflagtimer/modflagtimer.h"
+#include "digital_IO/input_output.h"
 
 size_t ramcounter;
 
@@ -16,6 +17,8 @@ int main(void)
     MAP_FPULazyStackingEnable();
     MAP_IntMasterEnable();
     SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+
+    pinsetup();
 
     // init für systick
     mf_timerinit(10000, &mf_systick);
