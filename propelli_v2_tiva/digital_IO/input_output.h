@@ -21,13 +21,13 @@ typedef struct
 
 void pinsetup();
 
-void pinIsOutput(PINS thispin);
-void pinIsPullup(PINS thispin, int state);
-void pinIsInput(PINS thispin);
+void pinIsOutput(PINS *thispin);
+void pinIsPullup(PINS *thispin, int state);
+void pinIsInput(PINS *thispin);
 
-void pinset(PINS thispin, int state);
-int pinget(PINS thispin);
-int pintoggle(PINS thispin);
+void pinset(PINS *thispin, int state);
+int pinget(PINS *thispin);
+int pintoggle(PINS *thispin);
 
 extern PINS led_green, led_red, led_blue, testpin;
 

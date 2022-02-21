@@ -31,39 +31,43 @@ PINS testpin = {
 
 void pinsetup()
     {
-     pinIsOutput(led_blue);
-     pinIsOutput(led_green);
-     pinIsOutput(led_red);
+   GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_2);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_4);
+    /// pinIsOutput(&led_blue);
+   //  pinIsOutput(&led_green);
+   //  pinIsOutput(&led_red);
     }
 
-void pinset(PINS thispin, int state)
+void pinset(PINS *thispin, int state)
     {
-    GPIOPinWrite(thispin.ui32Port, thispin.ui8Pins, 1);
+    GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, 1);
     }
-int pinget(PINS thispin)
+int pinget(PINS *thispin)
     {
-    return GPIOPinRead(thispin.ui32Port, thispin.ui8Pins);
+    return GPIOPinRead(thispin->ui32Port, thispin->ui8Pins);
     }
-int pintoggle(PINS thispin)
+int pintoggle(PINS *thispin)
 {
-    if (GPIOPinRead(thispin.ui32Port, thispin.ui8Pins))
+    if (GPIOPinRead(thispin->ui32Port, thispin->ui8Pins))
         {
-        GPIOPinWrite(thispin.ui32Port, thispin.ui8Pins, 0);
+        GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, 0);
         return 0;
         }
     else
         {
-        GPIOPinWrite(thispin.ui32Port, thispin.ui8Pins, 1);
+        GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, 1);
         return 1;
         }
 }
 
-void pinIsOutput(PINS thispin)
+void pinIsOutput(PINS *thispin)
     {
-    GPIOPinTypeGPIOOutput(thispin.ui32Port, thispin.ui8Pins);
+    GPIOPinTypeGPIOOutput(thispin->ui32Port, thispin->ui8Pins);
     }
 
-void pinIsInput(PINS thispin)
+void pinIsInput(PINS *thispin)
     {
-    GPIOPinTypeGPIOInput(thispin.ui32Port, thispin.ui8Pins);
+    GPIOPinTypeGPIOInput(thispin->ui32Port, thispin->ui8Pins);
     }
