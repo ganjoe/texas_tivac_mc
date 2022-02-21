@@ -13,7 +13,7 @@
 
 void mfinit_boardled()
 {
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+
     //GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, LED_GREEN);
    // GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, LED_RED);
     //GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, LED_BLUE);

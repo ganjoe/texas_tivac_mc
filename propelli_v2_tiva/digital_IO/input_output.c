@@ -31,18 +31,19 @@ PINS testpin = {
 
 void pinsetup()
     {
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_2);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_4);
-    /// pinIsOutput(&led_blue);
+   //  pinIsOutput(&led_blue);
    //  pinIsOutput(&led_green);
-   //  pinIsOutput(&led_red);
+    // pinIsOutput(&led_red);
     }
 
 void pinset(PINS *thispin, int state)
     {
-    GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, 1);
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 0);
     }
 int pinget(PINS *thispin)
     {

@@ -18,6 +18,8 @@ int main(void)
     MAP_IntMasterEnable();
     SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
 
+
+
     pinsetup();
 
     // init für systick
