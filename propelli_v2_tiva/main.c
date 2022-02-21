@@ -5,6 +5,7 @@
 #include "terminal/uart_tivac.h"
 #include "terminal/newCmdOrder.h"
 #include "modflagtimer/modflagtimer.h"
+#include "digital_IO/input_output.h"
 
 int main(void)
 {
@@ -14,6 +15,10 @@ int main(void)
     MAP_FPULazyStackingEnable();
     MAP_IntMasterEnable();
     SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+
+
+
+    pinsetup();
 
     // init für systick
     mf_timerinit(10000, &mf_systick);
@@ -46,9 +51,7 @@ int main(void)
     while(1)
     {
         /**/
-        task_toggle_blue_led(&mf_led_blue_toggle);
-        task_toggle_red_led(&mf_led_red_toggle);
-        task_toggle_green_led(&mf_led_green_toggle);
+
 
         //drv_setOvrLoadProt(&drvconfig);
 

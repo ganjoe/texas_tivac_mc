@@ -67,6 +67,9 @@ void Timer0IntHandler(void)
     modflag_upd_regular(&mf_led_green_toggle);
     modflag_upd_regular(&mf_led_red_toggle);
     modflag_upd_regular(&mf_led_blue_toggle);
+    task_toggle_blue_led(&mf_led_blue_toggle);
+    task_toggle_red_led(&mf_led_red_toggle);
+    task_toggle_green_led(&mf_led_green_toggle);
 
 
 
