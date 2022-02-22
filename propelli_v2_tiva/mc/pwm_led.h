@@ -13,7 +13,7 @@
 typedef struct
 {
     float red, blue, green;
-    float freq;
+    uint32_t freq;
     int flaginit;
 }PWMLED;
 

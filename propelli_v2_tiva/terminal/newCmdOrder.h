@@ -44,6 +44,7 @@ void    cmd_init_callbacks(TD_CMD *newcmd);
 void    bledred(int argc, const char **argv);
 void    bledgreen(int argc, const char **argv);
 void    bledblue(int argc, const char **argv);
+void    ledpwm(int argc, const char **argv);
 
 void    reset(int argc, const char **argv);
 void    settime(int argc, const char **argv);

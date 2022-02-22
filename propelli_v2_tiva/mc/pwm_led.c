@@ -13,9 +13,13 @@ void pwmLedSetFreq(PWMLED *freq)
     {
     if (!freq->flaginit)
         pwmLedInit(freq);
-
-    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, (SysCtlClockGet() / 250));
-    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, (SysCtlClockGet() / 250));
+    /*
+     * This function sets the period of the specified PWM generator block,
+     * where the period of the generator block is defined as the number of
+     * PWM clock ticks between pulses on the generator block zero signal.
+     */
+    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, (SysCtlClockGet() / freq->freq));
+    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, (SysCtlClockGet() / freq->freq));
     }
 
 void pwmLedSetDuty(PWMLED *duty)
@@ -23,9 +27,9 @@ void pwmLedSetDuty(PWMLED *duty)
     if (!duty->flaginit)
         pwmLedInit(duty);
 
-    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2) / 8);
-    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) / 1);
-    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_7,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) / 4);
+    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2) * duty->green);
+    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->blue);
+    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_7,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->red);
     }
 
 void pwmLedInit(PWMLED *pwmled)

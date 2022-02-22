@@ -110,6 +110,36 @@ void bledblue(int argc, const char **argv)
         }
     }
 
+void ledpwm(int argc, const char **argv)
+    {
+    float r = -1;
+    float g = -1;
+    float b = -1;
+    float f = -1;
+
+    if (argc == 5)
+    {
+    sscanf(argv[1], "%f", &r);
+    sscanf(argv[2], "%f", &g);
+    sscanf(argv[3], "%f", &b);
+    sscanf(argv[4], "%f", &f);
+
+    UARTprintf("\rcmd:\t%s",argv[0]);
+    utils_truncate_number(&r, 0, 1.0);
+    utils_truncate_number(&g, 0, 1.0);
+    utils_truncate_number(&b, 0, 1.0);
+    utils_truncate_number(&f, 1, 20E6);
+
+    pwmled.red = r;
+    pwmled.green = g;
+    pwmled.blue = b;
+    pwmled.freq =f;
+
+    pwmLedSetDuty(&pwmled);
+    pwmLedSetFreq(&pwmled);
+    }
+    }
+
 void mcpoti(int argc, const char **argv)
     {
     float f = -1;
@@ -126,14 +156,14 @@ void mcpoti(int argc, const char **argv)
 void cmd_init_callbacks(TD_CMD *asdf)
     {
     asdf->callback_len = 40;
-    asdf->argument_nbr = 4;
+    asdf->argument_nbr = 5;
 
     term_lol_setCallback(asdf, "reset", "mcu reset", "1,0", reset);
     term_lol_setCallback(asdf, "bledred", "switch board led", "1,0", bledred);
     term_lol_setCallback(asdf, "bledgreen", "switch board led", "1,0", bledgreen);
     term_lol_setCallback(asdf, "bledblue", "switch board led", "1,0", bledblue);
     term_lol_setCallback(asdf, "mcpoti", "analog-in override", "float -1,1", mcpoti);
-
+    term_lol_setCallback(asdf, "ledpwm", "rgb-led auf launchpad r,g,b,freq", "float 0..1 und 1..20E", ledpwm);
     }
 void cmd_parse_string(TD_CMD *newcmd,char *string)
 {
@@ -146,12 +176,12 @@ void cmd_parse_string(TD_CMD *newcmd,char *string)
     int ArgCount = 0;
 
     // pointerarry für argumente
-    char *ptrArgBuffer[4]; //max arguemtns
+    char *ptrArgBuffer[5]; //max arguemtns
 
     strbufferptr = strtok(string, delimiter);
 
     //argumente separieren, und in ptr-array speichern
-    while (strbufferptr && ArgCount < 4)
+    while (strbufferptr && ArgCount < 5)
         {
         ptrArgBuffer[ArgCount++] = strbufferptr;
         //
