@@ -59,16 +59,8 @@ void    confload(int argc, const char **argv);
  * - Contactron-Style Test Interface
  * - Init - Commands
  */
-void    init(int argc, const char **argv);
-void    duty    (int argc, const char **argv);
-void    freq    (int argc, const char **argv);
-void    ramp    (int argc, const char **argv);
-void    drvgain (int argc, const char **argv);
-void    drvrreg (int argc, const char **argv);
-void    csacal(int argc, const char **argv);
-void    csaoffset(int argc, const char**argv);
-void    phaseoffset(int argc, const char**argv);
-void    phasecal(int argc, const char**argv);
+
+void    mcpoti(int argc, const char **argv);
 
 extern TD_CMD newcmd;
 

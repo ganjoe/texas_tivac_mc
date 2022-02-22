@@ -37,18 +37,20 @@ typedef struct
     float  Tb;                  // Output: reference phase-b switching function (pu)
     float  Tc;                  // Output: reference phase-c switching function (pu)
     void   (*calc)();         // Pointer to calculation function
-    } SVGENMF;
+    } SVM_MF;
 
-typedef SVGENMF *SVGENMF_handle;
+extern SVM_MF svm_mf;
+
+//typedef SVGENMF *SVGENMF_handle;
 /*-----------------------------------------------------------------------------
 Default initalizer for the SVGENMF object.
 -----------------------------------------------------------------------------*/
-#define SVGENMF_DEFAULTS { 0,0,0,0,0,0,0,0,0,0,(void (*)(Uint32))svgenmf_calc }
+//#define SVGENMF_DEFAULTS { 0,0,0,0,0,0,0,0,0,0,(void (*)(Uint32))svgenmf_calc }
 
 #define PI_THIRD 1.04719755119660    // This is 60 degree
 /*------------------------------------------------------------------------------
 Prototypes for the functions in SVGEN_MF.C
 ------------------------------------------------------------------------------*/
-void svgenmf_calc(SVGENMF_handle);
+void svgenmf_calc(SVM_MF *v);
 
 #endif /* MC_SVM_MF_H_ */

@@ -30,10 +30,15 @@
 #include "stdio.h"
 #include "common/uartstdio.h"
 #include "driverlib/timer.h"
-
+#include "driverlib/pwm.h"
 //  user
 #include "common/utils.h"
 #include "modflagtimer/modflagtimer.h"
 #include "mf_task/board_led.h"
+#include "mc/svm_mf.h"
+#include "mf_task/mc_primer.h"
+#include "digital_IO/input_output.h"
+#include "mc/pwm_led.h"
+
 
 #endif /* MAIN_H_ */

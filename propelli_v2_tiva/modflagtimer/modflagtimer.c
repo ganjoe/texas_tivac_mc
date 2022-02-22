@@ -63,13 +63,17 @@ void Timer0IntHandler(void)
     //
     MAP_TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     ++mf_systick.ovf;
-    toggle_testpin(&mf_testpin);
+
+    pintoggle(&testpin);
     modflag_upd_regular(&mf_led_green_toggle);
     modflag_upd_regular(&mf_led_red_toggle);
     modflag_upd_regular(&mf_led_blue_toggle);
 
+    mc_task();
 
-
+  //  task_toggle_blue_led(&mf_led_blue_toggle);
+   // task_toggle_red_led(&mf_led_red_toggle);
+   // task_toggle_green_led(&mf_led_green_toggle);
 
     MAP_IntMasterEnable();
 }

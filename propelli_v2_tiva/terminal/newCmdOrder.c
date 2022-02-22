@@ -7,6 +7,7 @@
 
 #include  "newCmdOrder.h"
 #include "digital_IO/input_output.h"
+#include "mf_task/mc_primer.h"
 
 void reset(int argc, const char **argv)
     {
@@ -109,6 +110,18 @@ void bledblue(int argc, const char **argv)
         }
     }
 
+void mcpoti(int argc, const char **argv)
+    {
+    float f = -1;
+
+    if (argc == 2)
+    {
+    sscanf(argv[1], "%f", &f);
+    UARTprintf("\rcmd:\t%s",argv[0]);
+    utils_truncate_number(&f, -1.0, 1.0);
+    mc_data.poti_input = f;
+    }
+    }
 
 void cmd_init_callbacks(TD_CMD *asdf)
     {
@@ -119,6 +132,7 @@ void cmd_init_callbacks(TD_CMD *asdf)
     term_lol_setCallback(asdf, "bledred", "switch board led", "1,0", bledred);
     term_lol_setCallback(asdf, "bledgreen", "switch board led", "1,0", bledgreen);
     term_lol_setCallback(asdf, "bledblue", "switch board led", "1,0", bledblue);
+    term_lol_setCallback(asdf, "mcpoti", "analog-in override", "float -1,1", mcpoti);
 
     }
 void cmd_parse_string(TD_CMD *newcmd,char *string)

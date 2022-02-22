@@ -20,7 +20,10 @@
 #include "svm_mf.h"
 #include "math.h"
 
-void svgenmf_calc(SVGENMF *v)
+//SVM_MF svm_mf = {0,0,0,0,0,0,0,0,0,0,(void (*)(Uint32))svgenmf_calc };
+SVM_MF svm_mf ={0,0,0,0,0,0,0,0,0,0,.calc = &svgenmf_calc};
+
+void svgenmf_calc(SVM_MF *v)
 {
     float StepAngle, EntryOld, dx, dy;
     float T = 1.0;
