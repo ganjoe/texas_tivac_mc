@@ -17,17 +17,18 @@ int main(void)
     MAP_FPULazyStackingEnable();
     MAP_IntMasterEnable();
 
-    SysCtlClockSet(SYSCTL_SYSDIV_3|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+    SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+    //SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
     WaitFiveCycles();
 
     // init für gpio
     pinsetup();
 
     // init für pwmled
-
-    pwmLedSetDuty(&pwmled);
-    pwmLedSetFreq(&pwmled);
-
+    pwmLedInit(&pwmled);
+    //pwmLedSetDuty(&pwmled);
+    //pwmLedSetFreq(&pwmled);
+//
     // init für systick
     mf_timerinit(10000, &mf_systick);
 
@@ -46,7 +47,7 @@ int main(void)
 
 
     // pseudoinfos
-    UARTprintf("System Clock@ %d Mhz\r",SysCtlClockGet()/1000000);//SysCtlClockGet ist bei 80Mhz buggy
+    UARTprintf("System Clock@ %d Mhz\r",ROM_SysCtlClockGet()/1000000);//SysCtlClockGet ist bei einigen Frequenzen (z.b. 80Mhz)  buggy, daher _ROM
     UARTprintf("Flash Size@ %d kbyte\r",SysCtlFlashSizeGet()/1000);
     UARTprintf("SRAM Size@ %d kbyte\r",SysCtlSRAMSizeGet()/1000);
     UARTprintf("Systick @ %d Hz\r",(int)mf_systick.freq);

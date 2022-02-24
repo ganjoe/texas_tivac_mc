@@ -7,7 +7,7 @@
 #include "pwm_led.h"
 
 
-PWMLED pwmled ={.red = 0, .blue = 0,.green = 0,.freq=  10000,.flaginit = 0};
+PWMLED pwmled ={.red = 0.5, .blue = 0.5,.green = 0.5,.freq=  100,.flaginit = 0};
 
 void pwmLedSetFreq(PWMLED *freq)
     {
@@ -18,8 +18,8 @@ void pwmLedSetFreq(PWMLED *freq)
      * where the period of the generator block is defined as the number of
      * PWM clock ticks between pulses on the generator block zero signal.
      */
-    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, (SysCtlClockGet() / freq->freq));
-    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, (SysCtlClockGet() / freq->freq));
+    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, (80000000 / freq->freq));
+    MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, (80000000 / freq->freq));
     }
 
 void pwmLedSetDuty(PWMLED *duty)
@@ -27,9 +27,9 @@ void pwmLedSetDuty(PWMLED *duty)
     if (!duty->flaginit)
         pwmLedInit(duty);
 
-    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2) * duty->green);
-    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->blue);
-    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_7,  MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->red);
+    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5,  ((MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2) * duty->green)));
+    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6,  ((MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->blue)));
+    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_7,  ((MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->red)));
     }
 
 void pwmLedInit(PWMLED *pwmled)
@@ -49,6 +49,10 @@ void pwmLedInit(PWMLED *pwmled)
        // The PWM peripheral must be enabled for use.
        //
        MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM1);
+
+       // Wait for the PWM0 module to be ready.
+       //
+       while(!SysCtlPeripheralReady(SYSCTL_PERIPH_PWM1))
 
        //
        // Enable the GPIO port that is used for the PWM output.
@@ -79,8 +83,8 @@ void pwmLedInit(PWMLED *pwmled)
        // function parameter, f is the desired frequency, and SysClk is the
        // system clock frequency.
        //
-       MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, (SysCtlClockGet() / 250));
-       MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, (SysCtlClockGet() / 250));
+       MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, (ROM_SysCtlClockGet() / 250));
+       MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, (ROM_SysCtlClockGet() / 250));
 
        //
        // Set PWM0 to a duty cycle of 25%.  You set the duty cycle as a function

@@ -128,15 +128,25 @@ void ledpwm(int argc, const char **argv)
     utils_truncate_number(&r, 0, 1.0);
     utils_truncate_number(&g, 0, 1.0);
     utils_truncate_number(&b, 0, 1.0);
-    utils_truncate_number(&f, 1, 20E6);
+    utils_truncate_number(&f, 615, 300E3);
 
     pwmled.red = r;
     pwmled.green = g;
     pwmled.blue = b;
-    pwmled.freq =f;
+    pwmled.freq =(uint32_t)f;
 
-    pwmLedSetDuty(&pwmled);
     pwmLedSetFreq(&pwmled);
+    pwmLedSetDuty(&pwmled);
+
+    UARTprintf("\rPeriodGetPWM_GEN_2:%d",PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2));
+    UARTprintf("\rPeriodGetPWM_GEN_3:%d",PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3));
+
+
+    UARTprintf("\rPWMPulseWidth_PWM_GEN_3:%d",PWMPulseWidthGet(PWM1_BASE, PWM_OUT_5));
+    UARTprintf("\rPWMPulseWidth_PWM_GEN_4:%d",PWMPulseWidthGet(PWM1_BASE, PWM_OUT_6));
+    UARTprintf("\rPWMPulseWidth_PWM_GEN_5:%d",PWMPulseWidthGet(PWM1_BASE, PWM_OUT_7));
+
+
     }
     }
 
