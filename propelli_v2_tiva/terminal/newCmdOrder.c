@@ -133,21 +133,26 @@ void ledpwm(int argc, const char **argv)
     pwmled.red = r;
     pwmled.green = g;
     pwmled.blue = b;
-    pwmled.freq =(uint32_t)f;
+    pwmled.thisfreq =(uint32_t)f;
 
-    pwmLedSetFreq(&pwmled);
-    pwmLedSetDuty(&pwmled);
+    //pwmLedSetFreq(&pwmled);
+    pwmled.freq((uint32_t)f);
+    pwmled.greend(g, &pwmled);
+    pwmled.redd(r, &pwmled);
+    pwmled.blued(b, &pwmled);
+    //pwmLedSetDuty(&pwmled);
 
+    }
+    if (argc == 1 || 5)
+    {
     UARTprintf("\rPeriodGetPWM_GEN_2:%d",PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2));
     UARTprintf("\rPeriodGetPWM_GEN_3:%d",PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3));
-
 
     UARTprintf("\rPWMPulseWidth_PWM_GEN_3:%d",PWMPulseWidthGet(PWM1_BASE, PWM_OUT_5));
     UARTprintf("\rPWMPulseWidth_PWM_GEN_4:%d",PWMPulseWidthGet(PWM1_BASE, PWM_OUT_6));
     UARTprintf("\rPWMPulseWidth_PWM_GEN_5:%d",PWMPulseWidthGet(PWM1_BASE, PWM_OUT_7));
-
-
     }
+
     }
 
 void mcpoti(int argc, const char **argv)
