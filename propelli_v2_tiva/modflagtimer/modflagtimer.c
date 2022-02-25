@@ -12,7 +12,7 @@ MODFLAG mf_systick;
 void mf_timerinit(uint32_t hz, MODFLAG *thismf)
 {
 
-    uint32_t timerclock = SysCtlClockGet(); //in Hz
+    uint32_t timerclock = 80000000; //in Hz
     uint32_t timertop;
     timertop= timerclock / hz /2;
     thismf->freq = (float)hz;

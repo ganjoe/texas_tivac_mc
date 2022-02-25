@@ -131,7 +131,7 @@ void ledpwm(int argc, const char **argv)
 
 
     //pwmLedSetFreq(&pwmled);
-    pwmled.freq(f);
+    pwmled.freq(f, &pwmled);
     pwmled.green(g, &pwmled);
     pwmled.red(r, &pwmled);
     pwmled.blue(b, &pwmled);

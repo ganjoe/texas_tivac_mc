@@ -15,8 +15,10 @@ PWMLED pwmled ={.flaginit = 0,
                 };
 
 
-void _pwmLedFreq(uint32_t freq)
+void _pwmLedFreq(uint32_t freq, PWMLED *pwmled)
 {
+    if (!pwmled->flaginit)
+            _pwmLedInit(pwmled);
     /*
      * This function sets the period of the specified PWM generator block,
      * where the period of the generator block is defined as the number of

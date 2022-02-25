@@ -30,7 +30,7 @@ int main(void)
     //pwmLedSetFreq(&pwmled);
 //
     // init für systick
-    mf_timerinit(10000, &mf_systick);
+    mf_timerinit(1000, &mf_systick);
 
     // init für modflags
     mfinit_boardled();
