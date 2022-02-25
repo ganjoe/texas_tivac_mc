@@ -7,12 +7,13 @@
 #include "pwm_led.h"
 
 
-PWMLED pwmled ={.red = 0.5, .blue = 0.5,.green = 0.5,.thisfreq=  100,.flaginit = 0,
+PWMLED pwmled ={.flaginit = 0,
                 .freq =&_pwmLedFreq,
-                .redd = &_pwmLedDutyRed,
-                .blued = &_pwmLedDutyBlue,
-                .greend = &_pwmLedDutyGreen,
+                .red = &_pwmLedDutyRed,
+                .blue = &_pwmLedDutyBlue,
+                .green = &_pwmLedDutyGreen,
                 };
+
 
 void _pwmLedFreq(uint32_t freq)
 {
@@ -21,43 +22,33 @@ void _pwmLedFreq(uint32_t freq)
      * where the period of the generator block is defined as the number of
      * PWM clock ticks between pulses on the generator block zero signal.
      */
+    utils_truncate_number_uint32(&freq, 615, 300E3);
     MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_2, (80000000 / freq));
     MAP_PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, (80000000 / freq));
 }
 
-void _pwmLedDutyGreen(uint32_t green, PWMLED *pwmled)
+void _pwmLedDutyGreen(float green, PWMLED *pwmled)
     {
     if (!pwmled->flaginit)
-            pwmLedInit(pwmled);
+            _pwmLedInit(pwmled);
     MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5,  (abs(MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2) * green)-1));
     }
 
-void _pwmLedDutyRed(uint32_t red, PWMLED *pwmled)
+void _pwmLedDutyRed(float red, PWMLED *pwmled)
     {
     if (!pwmled->flaginit)
-            pwmLedInit(pwmled);
+            _pwmLedInit(pwmled);
     MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_7,  (abs(MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * red)-1));
     }
 
-void _pwmLedDutyBlue(uint32_t blue, PWMLED *pwmled)
+void _pwmLedDutyBlue(float blue, PWMLED *pwmled)
     {
     if (!pwmled->flaginit)
-            pwmLedInit(pwmled);
+            _pwmLedInit(pwmled);
     MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6,  (abs(MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * blue)-1));
     }
 
-
-void pwmLedSetDuty(PWMLED *duty)
-    {
-    if (!duty->flaginit)
-        pwmLedInit(duty);
-
-//    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5,  (abs(MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_2) * duty->green)-1));
-//    MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6,  (abs(MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->blue)-1));
- //   MAP_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_7,  (abs(MAP_PWMGenPeriodGet(PWM1_BASE, PWM_GEN_3) * duty->red)-1));
-    }
-
-void pwmLedInit(PWMLED *pwmled)
+void _pwmLedInit(PWMLED *pwmled)
     {
 
     //

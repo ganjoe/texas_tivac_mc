@@ -115,31 +115,26 @@ void ledpwm(int argc, const char **argv)
     float r = -1;
     float g = -1;
     float b = -1;
-    float f = -1;
+    uint32_t f = 0;
 
     if (argc == 5)
     {
     sscanf(argv[1], "%f", &r);
     sscanf(argv[2], "%f", &g);
     sscanf(argv[3], "%f", &b);
-    sscanf(argv[4], "%f", &f);
+    sscanf(argv[4], "%d", &f);
 
     UARTprintf("\rcmd:\t%s",argv[0]);
     utils_truncate_number(&r, 0, 1.0);
     utils_truncate_number(&g, 0, 1.0);
     utils_truncate_number(&b, 0, 1.0);
-    utils_truncate_number(&f, 615, 300E3);
 
-    pwmled.red = r;
-    pwmled.green = g;
-    pwmled.blue = b;
-    pwmled.thisfreq =(uint32_t)f;
 
     //pwmLedSetFreq(&pwmled);
-    pwmled.freq((uint32_t)f);
-    pwmled.greend(g, &pwmled);
-    pwmled.redd(r, &pwmled);
-    pwmled.blued(b, &pwmled);
+    pwmled.freq(f);
+    pwmled.green(g, &pwmled);
+    pwmled.red(r, &pwmled);
+    pwmled.blue(b, &pwmled);
     //pwmLedSetDuty(&pwmled);
 
     }

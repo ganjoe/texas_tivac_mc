@@ -25,7 +25,7 @@ int main(void)
     pinsetup();
 
     // init für pwmled
-    pwmLedInit(&pwmled);
+    _pwmLedInit(&pwmled);
     //pwmLedSetDuty(&pwmled);
     //pwmLedSetFreq(&pwmled);
 //

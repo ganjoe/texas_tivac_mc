@@ -18,7 +18,6 @@ void mfinit_boardled()
     modflag_init(&mf_led_blue_toggle, mf_systick,  0.5);
 }
 
-
 void toggle_testpin(MODFLAG *thismf)
     {
     if (thismf->flag)

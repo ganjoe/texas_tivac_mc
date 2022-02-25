@@ -12,8 +12,6 @@
 #include "main.h"
 
 
-
-
  MODFLAG mf_testpin;
  MODFLAG mf_led_red_toggle;
  MODFLAG mf_led_green_toggle;
