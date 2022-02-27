@@ -9,6 +9,7 @@
 #include "digital_IO/input_output.h"
 #include "tasks/mc_primer.h"
 
+
 void reset(int argc, const char **argv)
     {
     float f = -1;
@@ -109,7 +110,6 @@ void bledblue(int argc, const char **argv)
             }
         }
     }
-
 void ledpwm(int argc, const char **argv)
     {
     float r = -1;
@@ -149,31 +149,56 @@ void ledpwm(int argc, const char **argv)
     }
 
     }
-
 void mcpoti(int argc, const char **argv)
     {
     float f = -1;
 
     if (argc == 2)
-    {
-    sscanf(argv[1], "%f", &f);
-    UARTprintf("\rcmd:\t%s",argv[0]);
-    utils_truncate_number(&f, -1.0, 1.0);
-    mc_data.poti_input = f;
+        {
+        sscanf(argv[1], "%f", &f);
+        UARTprintf("\rcmd:\t%s",argv[0]);
+        utils_truncate_number(&f, -1.0, 1.0);
+        mc_data.poti_input = f;
+        }
     }
+void svmmf(int argc, const char **argv)
+    {
+    float g = -1;
+    float o = -1;
+    float f = 0;
+    if (argc == 4)
+        {
+        svm_mf.Gain = g;
+        svm_mf.Freq = f;
+        svm_mf.Offset = 0;
+        }
     }
 
+void help(int argc, const char **argv)
+    {
+    //dlogPause(&termlog);
+    int var;
+    for (var = 0; var < newcmd.callback_write; ++var)
+        {
+        UARTprintf("\rCMD %s ARG %s DESC %s \r",
+                    newcmd.callbacks[var].command,
+                    newcmd.callbacks[var].arg_names,
+                    newcmd.callbacks[var].help);
+        }
+    }
 void cmd_init_callbacks(TD_CMD *asdf)
     {
     asdf->callback_len = 40;
     asdf->argument_nbr = 5;
 
+    term_lol_setCallback(asdf, "help", "alle registrierten befehle auflisten", "no arg", reset);
     term_lol_setCallback(asdf, "reset", "mcu reset", "1,0", reset);
     term_lol_setCallback(asdf, "bledred", "switch board led", "1,0", bledred);
     term_lol_setCallback(asdf, "bledgreen", "switch board led", "1,0", bledgreen);
     term_lol_setCallback(asdf, "bledblue", "switch board led", "1,0", bledblue);
     term_lol_setCallback(asdf, "mcpoti", "analog-in override", "float -1,1", mcpoti);
-    term_lol_setCallback(asdf, "ledpwm", "rgb-led auf launchpad r,g,b,freq", "float 0..1 und 1..20E", ledpwm);
+    term_lol_setCallback(asdf, "ledpwm", "duty und freq fürrgb-led auf launchpad r,g,b,freq", "float 0..1 und 1..20E", ledpwm);
+    term_lol_setCallback(asdf, "svmmf", "svm-mf gain, offset, freq", "gain, offset, freq", svmmf);
     }
 void cmd_parse_string(TD_CMD *newcmd,char *string)
 {
