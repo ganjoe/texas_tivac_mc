@@ -7,94 +7,108 @@
 #include "input_output.h"
 #include "driverlib/gpio.h"
 
-PINS led_red = {
+tPINS led_red = {
                 .sysctr = SYSCTL_PERIPH_GPIOF,
                 .ui32Port = GPIO_PORTF_BASE,
                 .ui8Pins = GPIO_PIN_1,
-
+                .setInput = &_pinSetInput,
+                .setOutput =&_pinSetOutput,
+                .toggle = &_pinToggle,
+                //.strobe = &_pinStrobe,
+                .set = &_pinSet,
+                .get = &_pinGet,
                 };
 
-PINS led_blue = {
+tPINS led_blue = {
                 .sysctr = SYSCTL_PERIPH_GPIOF,
                 .ui32Port = GPIO_PORTF_BASE,
                 .ui8Pins = GPIO_PIN_2,
-
+                .setInput = &_pinSetInput,
+                .setOutput =&_pinSetOutput,
+                //.toggle = &_pinSetPullup,
+                //.strobe = &_pinStrobe,
+                .set = &_pinSet,
+                .get = &_pinGet,
                 };
 
-PINS led_green = {
+tPINS led_green = {
                 .sysctr = SYSCTL_PERIPH_GPIOF,
                 .ui32Port = GPIO_PORTF_BASE,
                 .ui8Pins = GPIO_PIN_3,
-
+                .setInput = &_pinSetInput,
+                .setOutput =&_pinSetOutput,
+                //.toggle = &_pinSetPullup,
+                //.strobe = &_pinStrobe,
+                .set = &_pinSet,
+                .get = &_pinGet,
                 };
 
-PINS testpin = {
+tPINS testpin = {
                 .sysctr = SYSCTL_PERIPH_GPIOF,
                 .ui32Port = GPIO_PORTF_BASE,
                 .ui8Pins = GPIO_PIN_4,
+                .setInput = &_pinSetInput,
+                .setOutput =&_pinSetOutput,
+                //.toggle = &_pinSetPullup,
+                //.strobe = &_pinStrobe,
+                .set = &_pinSet,
+                .get = &_pinGet,
                 };
-/*It takes five clock cycles after the write to enable a peripheral before the the peripheral is actually enabled*/
-void WaitFiveCycles()
-    {
-    asm(" nop");
-    asm(" nop");
-    asm(" nop");
-    asm(" nop");
-    asm(" nop");
-    }
 
-void PeripheralEnable(PINS *thispin)
-{
-     if(!thispin->PeripheralEnable)
+
+void _PeripheralEnable(tPINS *thispin)
+    {
+     if(!thispin->flaginit)
         {
          SysCtlPeripheralEnable(thispin->sysctr);
-         thispin->PeripheralEnable = 1;
+         thispin->flaginit = 1;
          WaitFiveCycles();
         }
-}
+    }
 
 void pinsetup()
     {
-    pinIsOutput(&led_blue);
-    pinIsOutput(&led_green);
-    pinIsOutput(&led_red);
+    led_green.setOutput(&led_green);
+    led_red.setOutput(&led_red);
+    led_blue.setOutput(&led_blue);
     }
 
-void pinset(PINS *thispin, int state)
+void _pinSet(struct sPINS *pin, int state)
     {
     if (state)
-        GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, thispin->ui8Pins);
+        GPIOPinWrite(pin->ui32Port, pin->ui8Pins, pin->ui8Pins);
     else
-        GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, 0);
+        GPIOPinWrite(pin->ui32Port, pin->ui8Pins, 0);
 
     }
-int pinget(PINS *thispin)
+
+int _pinGet(struct sPINS *pin)
     {
-    return GPIOPinRead(thispin->ui32Port, thispin->ui8Pins);
+    return GPIOPinRead(pin->ui32Port, pin->ui8Pins);
     }
 
-int pintoggle(PINS *thispin)
+int _pinToggle(struct sPINS *pin)
 {
-    if (GPIOPinRead(thispin->ui32Port, thispin->ui8Pins))
+    if (GPIOPinRead(pin->ui32Port, pin->ui8Pins))
         {
-        GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, 0);
+        GPIOPinWrite(pin->ui32Port, pin->ui8Pins, 0);
         return 0;
         }
     else
         {
-        GPIOPinWrite(thispin->ui32Port, thispin->ui8Pins, thispin->ui8Pins);
+        GPIOPinWrite(pin->ui32Port, pin->ui8Pins, pin->ui8Pins);
         return 1;
         }
 }
 
-void pinIsOutput(PINS *thispin)
+void _pinSetOutput(struct sPINS *pin)
     {
-    PeripheralEnable(thispin);
-    GPIOPinTypeGPIOOutput(thispin->ui32Port, thispin->ui8Pins);
+    _PeripheralEnable(pin);
+    GPIOPinTypeGPIOOutput(pin->ui32Port, pin->ui8Pins);
     }
 
-void pinIsInput(PINS *thispin)
+void _pinSetInput(struct sPINS *pin)
     {
-    PeripheralEnable(thispin);
-    GPIOPinTypeGPIOInput(thispin->ui32Port, thispin->ui8Pins);
+    _PeripheralEnable(pin);
+    GPIOPinTypeGPIOInput(pin->ui32Port, pin->ui8Pins);
     }

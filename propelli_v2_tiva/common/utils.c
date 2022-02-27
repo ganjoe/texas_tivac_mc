@@ -84,3 +84,13 @@ int utils_truncate_number(float *number, float min, float max)
 
     return did_trunc;
     }
+
+/*It takes five clock cycles after the write to enable a peripheral before the the peripheral is actually enabled*/
+void WaitFiveCycles()
+    {
+    asm(" nop");
+    asm(" nop");
+    asm(" nop");
+    asm(" nop");
+    asm(" nop");
+    }

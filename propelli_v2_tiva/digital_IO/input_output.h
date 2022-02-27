@@ -10,30 +10,34 @@
 
 #include "main.h"
 
+struct sPINS;
 
-typedef struct
-{
+typedef struct sPINS
+    {
+    int flaginit, state;
     uint32_t sysctr;    //Peripheral zum enablen
     uint32_t ui32Port;
     uint8_t ui8Pins;
-    int PeripheralEnable;
-    //void (*GPIOPinTypeGPIOOutput)(uint32_t,uint8_t);
-    //void (*GPIOPinTypeGPIOInput)(uint32_t,uint8_t);
-}PINS;
+    int (*get)(struct sPINS *pin);
+    void (*set)(struct sPINS *pin, int state);
+    void (*strobe)(struct sPINS *pin);
+    int (*toggle)(struct sPINS *pin);
+    void (*setInput)(struct sPINS *pin);
+    void (*setOutput)(struct sPINS *pin);
+    }tPINS;
 
 void pinsetup();
-void PeripheralEnable(PINS *thispin);
 
-void pinIsOutput(PINS *thispin);
-void pinIsPullup(PINS *thispin, int state);
-void pinIsInput(PINS *thispin);
+void _PeripheralEnable(tPINS *thispin);
 
-void pinset(PINS *thispin, int state);
-int pinget(PINS *thispin);
-int pintoggle(PINS *thispin);
+void _pinSetOutput(struct sPINS *pin);
+//void _pinSetPullup(struct sPINS *pin, int state);
+void _pinSetInput(struct sPINS *pin);
+void _pinSet(struct sPINS *pin, int state);
+int _pinGet(struct sPINS *pin);
+int _pinToggle(struct sPINS *pin);
 
-void WaitFiveCycles();
 
-extern PINS led_green, led_red, led_blue, testpin;
+extern tPINS led_green, led_red, led_blue, testpin;
 
 #endif /* DIGITAL_IO_INPUT_OUTPUT_H_ */

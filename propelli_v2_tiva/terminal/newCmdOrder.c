@@ -29,18 +29,18 @@ void bledred(int argc, const char **argv)
         sscanf(argv[1], "%d", &state);
         if(state)
             {
-            pinset(&led_red, 1);
+            led_red.set(&led_red, 1);
             UARTprintf("\rRED_LED ON");
             }
         else
             {
-            pinset(&led_red, 0);
+            led_red.set(&led_red, 0);
             UARTprintf("\rRED_LED OFF");
             }
         }
     if (argc == 1)
         {
-        if (pintoggle(&led_red))
+        if (led_red.toggle(&led_red))
             {
             UARTprintf("\rRED_LED ON");
             }
@@ -59,18 +59,18 @@ void bledgreen(int argc, const char **argv)
         sscanf(argv[1], "%d", &state);
         if(state)
             {
-            pinset(&led_green, 1);
+            led_green.set(&led_green, 1);
             UARTprintf("\rGRN_LED ON");
             }
         else
             {
-            pinset(&led_green, 0);
+            led_green.set(&led_green, 0);
             UARTprintf("\rGRN_LED OFF");
             }
         }
     if (argc == 1)
     {
-        if(pintoggle(&led_green))
+        if(led_green.toggle(&led_green))
         {
             UARTprintf("\rGRN_LED ON");
         }
@@ -88,18 +88,18 @@ void bledblue(int argc, const char **argv)
         sscanf(argv[1], "%d", &state);
         if(state)
             {
-           pinset(&led_blue, 1);
+           _pinSet(&led_blue, 1);
            UARTprintf("\rBLUE_LED ON");
             }
         else
             {
-            pinset(&led_blue, 0);
+            _pinSet(&led_blue, 0);
             UARTprintf("\rBLUE_LED OFF");
             }
         }
     if (argc == 1)
         {
-        if(pintoggle(&led_blue))
+        if(_pinToggle(&led_blue))
             {
             UARTprintf("\rBLUE_LED ON");
             }
