@@ -64,7 +64,7 @@ void Timer0IntHandler(void)
     MAP_TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     ++mf_systick.ovf;
 
-    _pinToggle(&testpin);
+    pintoggle(&testpin);
     modflag_upd_regular(&mf_led_green_toggle);
     modflag_upd_regular(&mf_led_red_toggle);
     modflag_upd_regular(&mf_led_blue_toggle);

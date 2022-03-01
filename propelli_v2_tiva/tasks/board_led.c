@@ -23,7 +23,7 @@ void toggle_testpin(MODFLAG *thismf)
     if (thismf->flag)
         {
         thismf->repeat = modflag_tickdiff(thismf);
-        _pinToggle(&testpin);
+        pintoggle(&testpin);
         thismf->duration = modflag_tickdiff(thismf);
         thismf->flag = false;
         }
@@ -34,7 +34,7 @@ void task_toggle_green_led(MODFLAG *thismf)
     if (thismf->flag)
         {
         thismf->repeat = modflag_tickdiff(thismf);
-        _pinToggle(&led_green);
+        pintoggle(&led_green);
         thismf->duration = modflag_tickdiff(thismf);
         thismf->flag = false;
         }
@@ -45,7 +45,7 @@ void task_toggle_red_led(MODFLAG *thismf)
     if (thismf->flag)
         {
         thismf->repeat = modflag_tickdiff(thismf);
-        _pinToggle(&led_red);
+        pintoggle(&led_red);
         thismf->duration = modflag_tickdiff(thismf);
         thismf->flag = false;
         }
@@ -56,7 +56,7 @@ void task_toggle_blue_led(MODFLAG *thismf)
     if (thismf->flag)
         {
         thismf->repeat = modflag_tickdiff(thismf);
-        _pinToggle(&led_blue);
+        pintoggle(&led_blue);
         thismf->duration = modflag_tickdiff(thismf);
         thismf->flag = false;
         }

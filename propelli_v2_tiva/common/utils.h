@@ -17,5 +17,4 @@ int utils_truncate_number_int(int *number, int min, int max);
 int utils_truncate_number(float *number, float min, float max);
 int utils_truncate_number_uint32(uint32_t *number, uint32_t min, uint32_t max);
 
-void WaitFiveCycles();
 #endif /* COMMON_UTILS_H_ */
