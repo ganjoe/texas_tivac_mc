@@ -170,7 +170,7 @@ void svmmf(int argc, const char **argv)
         {
         svm_mf.Gain = g;
         svm_mf.Freq = f;
-        svm_mf.Offset = 0;
+        svm_mf.Offset = o;
         }
     }
 
@@ -191,7 +191,7 @@ void cmd_init_callbacks(TD_CMD *asdf)
     asdf->callback_len = 40;
     asdf->argument_nbr = 5;
 
-    term_lol_setCallback(asdf, "help", "alle registrierten befehle auflisten", "no arg", reset);
+    term_lol_setCallback(asdf, "help", "alle befehle auflisten", "no arg", help);
     term_lol_setCallback(asdf, "reset", "mcu reset", "1,0", reset);
     term_lol_setCallback(asdf, "bledred", "switch board led", "1,0", bledred);
     term_lol_setCallback(asdf, "bledgreen", "switch board led", "1,0", bledgreen);
