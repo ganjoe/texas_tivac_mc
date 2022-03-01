@@ -158,7 +158,7 @@ void mcpoti(int argc, const char **argv)
         sscanf(argv[1], "%f", &f);
         UARTprintf("\rcmd:\t%s",argv[0]);
         utils_truncate_number(&f, -1.0, 1.0);
-        mc_data.poti_input = f;
+        //mc_data.poti_input = f;
         }
     }
 void svmmf(int argc, const char **argv)
@@ -168,6 +168,10 @@ void svmmf(int argc, const char **argv)
     float f = 0;
     if (argc == 4)
         {
+        sscanf(argv[1], "%f", &g);
+        sscanf(argv[2], "%f", &o);
+        sscanf(argv[3], "%f", &f);
+
         svm_mf.Gain = g;
         svm_mf.Freq = f;
         svm_mf.Offset = o;

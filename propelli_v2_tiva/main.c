@@ -6,6 +6,7 @@
 #include "terminal/newCmdOrder.h"
 #include "scheudler/modflagtimer.h"
 #include "digital_IO/input_output.h"
+#include "confgen/mc_config.h"
 
 size_t ramcounter;
 
@@ -21,11 +22,15 @@ int main(void)
     //SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
     WaitFiveCycles();
 
+    //firmware defaults laden
+
+
     // init für gpio
     pinsetup();
 
     // init für pwmled
     _pwmLedInit(&pwmled);
+confgen_setdefaults(&mcdata);
     //pwmLedSetDuty(&pwmled);
     //pwmLedSetFreq(&pwmled);
 //
