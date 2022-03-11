@@ -10,7 +10,7 @@
 #define DRV_WRITE_FAIL_COUNT 3
 #define DRV_READ_REPEAT_COUNT 3
 
-void drv_spi_blocking_init()
+void _drv_spi_blocking_init(TD_DRV83 *select)
 {
     // Enable the SSI0 peripheral
         SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
@@ -29,6 +29,7 @@ void drv_spi_blocking_init()
         SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_TI, SSI_MODE_MASTER, 200000, 16);
 
         SSIEnable(SSI0_BASE);
+        select->flag_init = true;
 }
 
 void drv_writeRegister(uint8_t regNr, uint16_t bitMask)
