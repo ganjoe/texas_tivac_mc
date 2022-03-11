@@ -121,8 +121,11 @@ int _drv_checkIfAvailble(TD_DRV83 *select)
     if(select->setPwmMode(select))
         {
         select->modeSelect = drv_pwm_3x;
-        select->setPwmMode(select);
-        return 1;
+        if(select->setPwmMode(select))
+            {
+             return 1;
+            }
+
         }
 
     return 0;
