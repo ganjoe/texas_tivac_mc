@@ -7,12 +7,12 @@
 
 #include "main.h"
 
-MODFLAG mf_systick;
+MODFLAG mf_systick, mf_spi_timeout;
 
 void mf_timerinit(uint32_t hz, MODFLAG *thismf)
 {
 
-    uint32_t timerclock = 80000000; //in Hz
+    uint32_t timerclock = ROM_SysCtlClockGet(); //in Hz
     uint32_t timertop;
     timertop= timerclock / hz /2;
     thismf->freq = (float)hz;
@@ -68,12 +68,17 @@ void Timer0IntHandler(void)
     modflag_upd_regular(&mf_led_green_toggle);
     modflag_upd_regular(&mf_led_red_toggle);
     modflag_upd_regular(&mf_led_blue_toggle);
-
     mc_task();
 
-  //  task_toggle_blue_led(&mf_led_blue_toggle);
-   // task_toggle_red_led(&mf_led_red_toggle);
+    // task_toggle_blue_led(&mf_led_blue_toggle);
+   // task_toggle_red_led(&mf_led_red_toggle);7
    // task_toggle_green_led(&mf_led_green_toggle);
+
+   if ( mf_systick.ovf == mf_spi_timeout.tickdiff)
+       {
+       mf_spi_timeout.flag_delay = true;
+       }
+
 
     MAP_IntMasterEnable();
 }
@@ -89,6 +94,18 @@ uint64_t modflag_tickdiff(MODFLAG *cnt)
     cnt->oldtick = cnt->newtick;
     return cnt->tickdiff;
     }
+
+uint32_t modflag_Timeout(MODFLAG *thismf, uint32_t systicks)
+    {
+    if(thismf->flag_delay)  // wird im timer ovf interrupt gesetzt
+        {
+        thismf->flag_delay = 0;
+        return 1;
+        }
+    thismf->tickdiff = mf_systick.ovf + 1 + systicks;
+    return 0;
+    }
+
 void modflag_enable(MODFLAG *thismf)
     {
     thismf->init_done = true;

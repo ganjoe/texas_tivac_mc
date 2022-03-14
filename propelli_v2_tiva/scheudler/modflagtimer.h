@@ -16,7 +16,8 @@ typedef struct
     uint64_t rampcounter, callcount;
     uint32_t counter, ovf;
     uint64_t oldtick, systick, newtick,repeat ;
-    uint32_t duration, tickdiff;
+    uint32_t duration;
+    int tickdiff;
     float freq, duty_sp;
     /*
      * flag         funktion wird ausgeführt, danach rückgesetzt. wird durch mftask gepollt
@@ -34,10 +35,11 @@ typedef struct
     void modflag_enable(MODFLAG *thismf);
     void modflag_disable(MODFLAG *thismf);
     void modflag_set_delay_until_callback(MODFLAG *thismf);
+    uint32_t modflag_Timeout(MODFLAG *thismf, uint32_t systicks);
     uint64_t modflag_tickdiff(MODFLAG *cnt);
 
 void mf_timerinit(uint32_t hz, MODFLAG *thismf);
 
-extern MODFLAG mf_systick;
+extern MODFLAG mf_systick,mf_spi_timeout;
 
 #endif /* MODFLAGTIMER_MODFLAGTIMER_H_ */

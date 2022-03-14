@@ -43,11 +43,15 @@ void drv_writeRegister(uint8_t regNr, uint16_t bitMask)
 
     utils_set_bit_in_Word(&tword, 15, 0);                           // rw -bit setzen(15)
     utils_set_bits_in_Word(&tword, bitMask, 1);
-    while(SSIDataGetNonBlocking(SSI0_BASE, &temp)) {}     // buffer leeren, nonblocking h�ngt nicht falls schon leer
-    SSIDataPut(SSI0_BASE, tword);
-    while(SSIBusy(SSI0_BASE))
-       {
-       }
+
+   // modflag_Timeout(&mf_spi_timeout, 10);
+        while(SSIDataGetNonBlocking(SSI0_BASE, &temp)) {}     // buffer leeren, nonblocking h�ngt nicht falls schon leer
+        SSIDataPut(SSI0_BASE, tword);
+        while(SSIBusy(SSI0_BASE))
+           {
+           // if (modflag_Timeout(&mf_spi_timeout, 10))
+          //      {break;}
+           }
     }
 
 void drv_readRegister(uint16_t regNr, uint16_t *data)
@@ -58,12 +62,15 @@ void drv_readRegister(uint16_t regNr, uint16_t *data)
     tword <<= 11;                                                   // und an position vor das rw-bit schieben
 
     utils_set_bit_in_Word(&tword, 15, 1);                           // rw -bit setzen(15)
-
+    //modflag_Timeout(&mf_spi_timeout, 10);
    while(SSIDataGetNonBlocking(SSI0_BASE, (uint32_t*)data)) {}     // buffer leeren, nonblocking h�ngt nicht falls schon leer
     SSIDataPut(SSI0_BASE, (uint32_t)tword);                         //adresse mit dummyword f�r clockgenerierung senden
     while(SSIBusy(SSI0_BASE))
        {
+       // if (modflag_Timeout(&mf_spi_timeout, 10))
+        //    {break;}
        }
+
 
     SSIDataGet(SSI0_BASE, (uint32_t*)data);
 
@@ -73,10 +80,10 @@ int drv_writeCompareReg(uint8_t regNr, uint16_t data)
 
 
     uint16_t comparebuffer = 0;
-    uint8_t errcounter = DRV_WRITE_FAIL_COUNT;
+    int errcounter = DRV_WRITE_FAIL_COUNT;
     
     
-    while(errcounter)
+    while(errcounter >= 0)
             {
             drv_writeRegister(regNr, data);
             drv_readRegister(regNr, &comparebuffer);
@@ -97,9 +104,9 @@ int drv_writeCompareReg(uint8_t regNr, uint16_t data)
 int drv_readCompareReg(uint8_t regNr, uint16_t *data)
     {
     uint16_t comparebuff = 0;
-    uint8_t errcounter = DRV_READ_REPEAT_COUNT;
+    int errcounter = DRV_READ_REPEAT_COUNT;
 
-    while(errcounter)
+    while(errcounter>=0)
         {
          drv_readRegister (regNr,data);
          drv_readRegister (regNr,&comparebuff);
