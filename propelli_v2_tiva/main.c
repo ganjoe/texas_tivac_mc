@@ -30,7 +30,7 @@ int main(void)
 
     // init für pwmled
     _pwmLedInit(&pwmled);
-confgen_setdefaults(&mcdata);
+    confgen_setdefaults(&mcdata);
     //pwmLedSetDuty(&pwmled);
     //pwmLedSetFreq(&pwmled);
 //
@@ -47,15 +47,14 @@ confgen_setdefaults(&mcdata);
     cmd_init_callbacks(&newcmd);
 
      // init für spi
-    drv_spi_blocking_init();
-
-
+    drv.SpiInit(&drv);
 
     // pseudoinfos
     UARTprintf("System Clock@ %d Mhz\r",ROM_SysCtlClockGet()/1000000);//SysCtlClockGet ist bei einigen Frequenzen (z.b. 80Mhz)  buggy, daher _ROM
     UARTprintf("Flash Size@ %d kbyte\r",SysCtlFlashSizeGet()/1000);
     UARTprintf("SRAM Size@ %d kbyte\r",SysCtlSRAMSizeGet()/1000);
     UARTprintf("Systick @ %d Hz\r",(int)mf_systick.freq);
+    UARTprintf("Drv83 available: %d\r",drv.check(&drv));
     UARTprintf("type help\r");
 
 

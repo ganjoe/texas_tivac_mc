@@ -10,7 +10,7 @@
 #define DRV_WRITE_FAIL_COUNT 3
 #define DRV_READ_REPEAT_COUNT 3
 
-void drv_spi_blocking_init()
+void _drv_spi_blocking_init(TD_DRV83 *select)
 {
     // Enable the SSI0 peripheral
         SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
@@ -29,19 +29,29 @@ void drv_spi_blocking_init()
         SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_TI, SSI_MODE_MASTER, 200000, 16);
 
         SSIEnable(SSI0_BASE);
+        select->flag_init = true;
 }
 
 void drv_writeRegister(uint8_t regNr, uint16_t bitMask)
     {
 
     uint16_t tword;
+    uint32_t temp;
 
     tword = regNr;                                                  //adressnummer setzen (4 bit) und an position vor das rw-bit schieben
     tword <<= 11;                                                   // und an position vor das rw-bit schieben
 
     utils_set_bit_in_Word(&tword, 15, 0);                           // rw -bit setzen(15)
     utils_set_bits_in_Word(&tword, bitMask, 1);
-    SSIDataPut(SSI0_BASE, tword);
+
+   // modflag_Timeout(&mf_spi_timeout, 10);
+        while(SSIDataGetNonBlocking(SSI0_BASE, &temp)) {}     // buffer leeren, nonblocking h�ngt nicht falls schon leer
+        SSIDataPut(SSI0_BASE, tword);
+        while(SSIBusy(SSI0_BASE))
+           {
+           // if (modflag_Timeout(&mf_spi_timeout, 10))
+          //      {break;}
+           }
     }
 
 void drv_readRegister(uint16_t regNr, uint16_t *data)
@@ -52,11 +62,15 @@ void drv_readRegister(uint16_t regNr, uint16_t *data)
     tword <<= 11;                                                   // und an position vor das rw-bit schieben
 
     utils_set_bit_in_Word(&tword, 15, 1);                           // rw -bit setzen(15)
-
-    while(SSIDataGetNonBlocking(SSI0_BASE, (uint32_t*)data)) {}     // buffer leeren, nonblocking h�ngt nicht falls schon leer
-
+    //modflag_Timeout(&mf_spi_timeout, 10);
+   while(SSIDataGetNonBlocking(SSI0_BASE, (uint32_t*)data)) {}     // buffer leeren, nonblocking h�ngt nicht falls schon leer
     SSIDataPut(SSI0_BASE, (uint32_t)tword);                         //adresse mit dummyword f�r clockgenerierung senden
-    while(SSIBusy(SSI0_BASE))        {}
+    while(SSIBusy(SSI0_BASE))
+       {
+       // if (modflag_Timeout(&mf_spi_timeout, 10))
+        //    {break;}
+       }
+
 
     SSIDataGet(SSI0_BASE, (uint32_t*)data);
 
@@ -66,10 +80,10 @@ int drv_writeCompareReg(uint8_t regNr, uint16_t data)
 
 
     uint16_t comparebuffer = 0;
-    uint8_t errcounter = DRV_WRITE_FAIL_COUNT;
+    int errcounter = DRV_WRITE_FAIL_COUNT;
     
     
-    while(errcounter)
+    while(errcounter >= 0)
             {
             drv_writeRegister(regNr, data);
             drv_readRegister(regNr, &comparebuffer);
@@ -90,9 +104,9 @@ int drv_writeCompareReg(uint8_t regNr, uint16_t data)
 int drv_readCompareReg(uint8_t regNr, uint16_t *data)
     {
     uint16_t comparebuff = 0;
-    uint8_t errcounter = DRV_READ_REPEAT_COUNT;
+    int errcounter = DRV_READ_REPEAT_COUNT;
 
-    while(errcounter)
+    while(errcounter>=0)
         {
          drv_readRegister (regNr,data);
          drv_readRegister (regNr,&comparebuff);

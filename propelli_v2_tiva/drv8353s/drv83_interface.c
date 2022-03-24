@@ -9,10 +9,7 @@
 #include "drv83_interface.h"
 #include "drv83_ll_tivaspi.h"
 
-//implementiert in drv83_ll_
-
-
-int drv_setPwmMode(TD_DRV83 *select)
+int _drv_setPwmMode(TD_DRV83 *select)
     {
     uint16_t regbuffer = 0;
 
@@ -41,7 +38,7 @@ int drv_setPwmMode(TD_DRV83 *select)
     }
    return 0;
     }
-int drv_setShuntGain(TD_DRV83 *select)
+int _drv_setShuntGain(TD_DRV83 *select)
     {
 
     uint16_t regbuffer = 0;
@@ -80,7 +77,7 @@ int drv_setShuntGain(TD_DRV83 *select)
     }
     return 0;
     }
-int drv_setOvrLoadProt(TD_DRV83 *select)
+int _drv_setOvrLoadProt(TD_DRV83 *select)
     {
     uint16_t regbuffer = 0;
 
@@ -115,3 +112,28 @@ int drv_setOvrLoadProt(TD_DRV83 *select)
     return 0;
     }
 
+int _drv_checkIfAvailble(TD_DRV83 *select)
+    {
+    if (!select->flag_init)
+        { return 0;}
+
+    select->modeSelect = drv_pwm_1x;
+    if(select->setPwmMode(select))
+        {
+        select->modeSelect = drv_pwm_3x;
+        if(select->setPwmMode(select))
+            {
+             return 1;
+            }
+
+        }
+
+    return 0;
+    }
+
+TD_DRV83 drv = {.setPwmMode = & _drv_setPwmMode,
+                .setOvrLoadProt = &_drv_setOvrLoadProt,
+                .setShuntGain = &_drv_setShuntGain,
+                .SpiInit = &_drv_spi_blocking_init,
+                .check = &_drv_checkIfAvailble,
+                };

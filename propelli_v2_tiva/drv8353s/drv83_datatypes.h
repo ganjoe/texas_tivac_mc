@@ -88,16 +88,32 @@ typedef enum
 //*****************************************************************************
 
 
+struct TD_DRV83S;
 
-typedef struct
+typedef struct TD_DRV83S
 {
-    uint16_t shadowRegister[8];
-    EN_DRV_MODE_SHNT csa_gain;
     EN_DRV_ADDR regAdress;
-    EN_DRV_MODE_PWM modeSelect;
     EN_DRV_MODE_OFFSET opref;
+    EN_DRV_MODE_SHNT csa_gain;
+    EN_DRV_MODE_PWM modeSelect;
     EN_DRV_MODE_OLP OLshuntvolts;
 
+    int flag_init;
+    int (*check)(struct TD_DRV83S *drv);
+    void (*SpiInit)(struct TD_DRV83S *drv);
+
+    int (*setPwmMode)(struct TD_DRV83S *drv);
+    int (*setShuntGain)(struct TD_DRV83S *drv);
+    int (*setOvrLoadProt)(struct TD_DRV83S *drv);
+
+    int (*readCompare)(uint8_t regNr, uint16_t *data);
+    int (*writeCompare)(uint8_t regNr, uint16_t data);
+
+    void (*drv_writeRegister) (uint8_t regNr, uint16_t data);
+    void (*drv_readRegister) (uint16_t regNr, uint16_t *data);
+
 } TD_DRV83;
+
+extern TD_DRV83 drv;
 
 #endif /* DRV8353S_DRV83_DATATYPES_H_ */
